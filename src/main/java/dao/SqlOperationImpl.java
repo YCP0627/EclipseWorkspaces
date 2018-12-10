@@ -112,15 +112,8 @@ public class SqlOperationImpl implements SqlOperation {
         return execute(s);
     }
 
-    public Boolean modifyGrade(String id,String class_id, String key, Object value) {
-        String s=null;
-        if (value instanceof String){
-             s=String.format("update grade set \"%s\"=\"%s\" where id=\"%s\"&&class_id=\"%s\"",key,(String)value,id,class_id);
-        }else if (value instanceof Integer){
-            s=String.format("update grade set \"%s\"=\"%d\" where id=\"%s\"&&class_id=\"%s\"",key,(Integer)value,id,class_id);
-        }else if (value instanceof Float){
-            s=String.format("update grade set \"%s\"=\"%f\" where id=\"%s\"&&class_id=\"%s\"",key,(Float)value,id,class_id);
-        }
+    public Boolean modifyGrade(String id,String class_id, String key, float value) {
+        String s = String.format("update grade set %s=%f where id=\"%s\" and class_id=\"%s\"",key,value,id,class_id);
         return execute(s);
     }
 
@@ -164,18 +157,35 @@ public class SqlOperationImpl implements SqlOperation {
     public Boolean modifyClassInfo(String id, String key, Object value) {
         String s=null;
         if(value instanceof String){
-            s=String.format("update class set \"%s\"=\"%s\" where class_id=\"%s\"",key,(String)value,id);
+            s=String.format("update class set %s=\"%s\" where class_id=\"%s\"",key,(String)value,id);
         }
         else if(value instanceof  Integer){
-            s=String.format("update class set \"%s\"=%d where class_id=\"%s\"",key,(Integer)value,id);
+            s=String.format("update class set %s=%d where class_id=\"%s\"",key,(Integer)value,id);
         }
         else if(value instanceof  Float){
-            s=String.format("update class set \"%s\"=%f where class_id=\"%s\"",key,(Float)value,id);
+            s=String.format("update class set %s=%f where class_id=\"%s\"",key,(Float)value,id);
         }
         return execute(s);
     }
 
-    public Class getClassInfoByName(String name) {
+    public Class getClassInfoById(String class_id) {
+        String s = String.format("select * from class where name = \"%s\"",class_id);
+        try{
+            PreparedStatement pre = connection.prepareStatement(s);
+            ResultSet result = pre.executeQuery();
+            if(result.next()){
+                Class lesson = new Class();
+                lesson.setClassId(result.getString("class_id"));
+                lesson.setName(result.getString("class_name"));
+                lesson.setClassHour(result.getInt("class_hour"));
+                lesson.setObligatory(result.getBoolean("class_proprety"));
+                lesson.setScore(result.getFloat("score"));
+                lesson.setTeacher(result.getString("teacher"));
+                return lesson;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
