@@ -1,6 +1,6 @@
 package dao;
 
-import Model.Achievement;
+import Model.Grade;
 import Model.Class;
 import Model.Student;
 
@@ -10,19 +10,20 @@ public interface SqlOperation {
     void close() throws SQLException;
     Boolean insertStudentInfo(Student student);
     Boolean delStudentInfo(String id);
-    Boolean modifyStudentInfo(String id,String key,String value);
+    Boolean modifyStudentInfo(String id,String key,Object value);
     Student getStudentInfoById(String id);
     Student getStudentInfoByIdCard(String idCard);
 
-    Boolean insertAchInfo(Achievement arc);
-    Boolean delAch(String id);
-    Boolean modifyAch(String id,String key,String value);
-    Achievement getAchInfoByStudentName(String name);
+    Boolean insertGrade(Grade arc);
+    Boolean delGrade(String id,String class_id);
+    Boolean modifyGrade(String id,String class_id,String key,Object value);
+    Grade getGradeByStudentName(String name);
+    Grade getGrade(String name,String class_name);
 
 
     Boolean insertClassInfo(Class c);
     Boolean delClassInfo(String classId);
-    Boolean modifyClassInfo(String id,String key,String value);
+    Boolean modifyClassInfo(String id,String key,Object value);
     Class getClassInfoByName(String name);
 
 }

@@ -1,7 +1,7 @@
 package dao;
 
 import Entity.AppConfig;
-import Model.Achievement;
+import Model.Grade;
 import Model.Class;
 import Model.Student;
 
@@ -58,8 +58,15 @@ public class SqlOperationImpl implements SqlOperation {
         return execute(s);
     }
 
-    public Boolean modifyStudentInfo(String id, String key, String value) {
-        String s = String.format("update student set %s = \"%s\" where id = \"%s\"",key,value,id);
+    public Boolean modifyStudentInfo(String id, String key, Object value) {
+        String s=null;
+        if(value instanceof  String){
+            s = String.format("update student set %s = \"%s\" where id = \"%s\"",key,(String)value,id);
+        }
+        else{
+            s = String.format("update student set %s = \"%d\" where id = \"%s\"",key,(Integer)value,id);
+        }
+
         return execute(s);
     }
 
@@ -89,33 +96,79 @@ public class SqlOperationImpl implements SqlOperation {
         return null;
     }
 
-    public Boolean insertAchInfo(Achievement arc) {
+    public Boolean insertGrade(Grade grade) {
+        String s=String.format("insert into grade(id,name,class_id,class_name,class_grade)"+
+                "values(\"%s\",\"%s\",\"%s\",\"%s\",%f)",grade.getId(),grade.getStuName(),grade.getClassId(),
+                grade.getClassName(),grade.getGrade());
+        return execute(s);
+    }
+
+    public Boolean delGrade(String id,String class_id) {
+        String s=String.format("delete from grade where id=\"%s\"&&class_id=\"%s\" ",id,class_id);
+        return execute(s);
+    }
+
+    public Boolean modifyGrade(String id,String class_id, String key, Object value) {
+        String s=null;
+        if (value instanceof String){
+             s=String.format("update grade set \"%s\"=\"%s\" where id=\"%s\"&&class_id=\"%s\"",key,(String)value,id,class_id);
+        }else if (value instanceof Integer){
+            s=String.format("update grade set \"%s\"=\"%d\" where id=\"%s\"&&class_id=\"%s\"",key,(Integer)value,id,class_id);
+        }else if (value instanceof Float){
+            s=String.format("update grade set \"%s\"=\"%f\" where id=\"%s\"&&class_id=\"%s\"",key,(Float)value,id,class_id);
+        }
+        return execute(s);
+    }
+
+    public Grade getGradeByStudentName(String name) {
+        String s= String.format("select * from student where name=\"%s\"",name);
+        try{
+        PreparedStatement pre = connection.prepareStatement(s);
+        ResultSet result = pre.executeQuery();
+        if (result.next()){
+            Grade grade = new Grade();
+            grade.setId(result.getString("id"));
+            grade.setStuName(result.getString("name"));
+            grade.setClassId(result.getString("class_id"));
+            grade.setClassName(result.getString("class_name"));
+            grade.setGrade(result.getInt("class_grade"));
+            return grade;
+               }
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
         return null;
     }
 
-    public Boolean delAch(String id) {
-        return null;
-    }
-
-    public Boolean modifyAch(String id, String key, String value) {
-        return null;
-    }
-
-    public Achievement getAchInfoByStudentName(String name) {
+    public Grade getGrade(String name,String class_name){
+        String s = String.format("select * from student where name=\"%s\"&&class_name=\"%s\"",name,class_name);
         return null;
     }
 
     public Boolean insertClassInfo(Class c) {
-
-        return null;
+        String s=String.format("insert into class(class_id,class_name,class_hour,class_proprety,score,teacher)"+
+                "values(\"%s\",\"%s\",%d,%b,%f,\"%s\")",c.getClassId(),c.getName(),c.getClassHour(),c.getObligatory(),
+                c.getScore(),c.getTeacher());
+        return execute(s);
     }
 
     public Boolean delClassInfo(String classId) {
-        return null;
+        String s=String.format("delete from class where class_id=\"%s\"",classId);
+        return execute(s);
     }
 
-    public Boolean modifyClassInfo(String id, String key, String value) {
-        return null;
+    public Boolean modifyClassInfo(String id, String key, Object value) {
+        String s=null;
+        if(value instanceof String){
+            s=String.format("update class set \"%s\"=\"%s\" where class_id=\"%s\"",key,(String)value,id);
+        }
+        else if(value instanceof  Integer){
+            s=String.format("update class set \"%s\"=%d where class_id=\"%s\"",key,(Integer)value,id);
+        }
+        else if(value instanceof  Float){
+            s=String.format("update class set \"%s\"=%f where class_id=\"%s\"",key,(Float)value,id);
+        }
+        return execute(s);
     }
 
     public Class getClassInfoByName(String name) {
