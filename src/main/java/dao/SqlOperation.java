@@ -16,7 +16,7 @@ public interface SqlOperation {
 
     Boolean insertGrade(Grade arc);
     Boolean delGrade(String id,String class_id);
-    Boolean modifyGrade(String id,String class_id,String key,Object value);
+    Boolean modifyGrade(String id,String class_id,String key,float value);
     Grade getGradeByStudentName(String name);
     Grade getGrade(String name,String class_name);
 
@@ -24,6 +24,6 @@ public interface SqlOperation {
     Boolean insertClassInfo(Class c);
     Boolean delClassInfo(String classId);
     Boolean modifyClassInfo(String id,String key,Object value);
-    Class getClassInfoByName(String name);
+    Class getClassInfoById(String class_id);
 
 }
