@@ -1,11 +1,15 @@
 package dao;
 
 import Entity.AppConfig;
+import Model.Adminstrator;
 import Model.Grade;
 import Model.Class;
 import Model.Student;
 
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class SqlOperationImpl implements SqlOperation {
 
@@ -175,6 +179,45 @@ public class SqlOperationImpl implements SqlOperation {
         return null;
     }
 
+
+    public boolean updateAdmin(String phone, String key, Object value) {
+        String s;
+        if (value instanceof String){
+            s = String.format("update admin set %s = \"%s\" where phone = \"%s\"",key,value,phone);
+        }else if (value instanceof Integer){
+            s = String.format("update admin set %s = %d where phone = \"%s\"",key,value,phone);
+        }else {
+            DateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String date = simpleDateFormat.format((Date) value);
+            s = String.format("update admin set %s = \"%s\" where phone = \"%s\"",key,date,phone);
+            System.out.println(s);
+        }
+        return execute(s);
+    }
+
+    public Adminstrator getAdmin(String phone) {
+        String s= String.format("select * from admin where phone=\"%s\"",phone);
+        try{
+            PreparedStatement pre = connection.prepareStatement(s);
+            ResultSet result = pre.executeQuery();
+            if (result.next()){
+                Adminstrator adminstrator = new Adminstrator();
+                adminstrator.setLastDate(result.getDate("last_login_date"));
+                adminstrator.setLoginCount(result.getInt("login_count"));
+                adminstrator.setName(result.getString("name"));
+                adminstrator.setPassword(result.getString("password"));
+                adminstrator.setStyle(result.getString("style"));
+                adminstrator.setRegisterDate(result.getDate("register_date"));
+                return adminstrator;
+            }
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
     private Boolean execute(String s){
         try {
             statement.execute(s);
@@ -184,4 +227,6 @@ public class SqlOperationImpl implements SqlOperation {
             return false;
         }
     }
+
+
 }

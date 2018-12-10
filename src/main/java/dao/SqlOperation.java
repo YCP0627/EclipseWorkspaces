@@ -1,5 +1,6 @@
 package dao;
 
+import Model.Adminstrator;
 import Model.Grade;
 import Model.Class;
 import Model.Student;
@@ -25,5 +26,8 @@ public interface SqlOperation {
     Boolean delClassInfo(String classId);
     Boolean modifyClassInfo(String id,String key,Object value);
     Class getClassInfoByName(String name);
+
+    Adminstrator getAdmin(String phone);
+    boolean updateAdmin(String phone,String key, Object value);
 
 }

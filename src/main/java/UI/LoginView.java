@@ -31,14 +31,16 @@ public class LoginView extends BaseView implements ILoginView {
         jButton.setBounds(0,0,40,40);
         jButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                MenuView menuView = new MenuView();
-                startNewView(menuView);
+                loginPresenter.login();
             }
         });
         jFrame.add(jButton);
     }
 
     public void loginResult(Boolean success) {
-
+        if (success){
+            MenuView menuView = new MenuView();
+            startNewView(menuView);
+        }
     }
 }
