@@ -20,7 +20,6 @@ public abstract class BaseView {
 
     //第一次运行对数据进行初始化
     protected  void onStart(){
-
     }
 
     //视图处于后台不可见状态

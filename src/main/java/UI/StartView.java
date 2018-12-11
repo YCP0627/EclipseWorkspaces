@@ -10,14 +10,27 @@ public class StartView extends BaseView {
     @Override
     protected void onCreate() {
         super.onCreate();
+        jFrame.setUndecorated(true);
+        jFrame.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
         jFrame.setSize(200,100);
         jFrame.setLocationRelativeTo(null);
-        JLabel jLabel = new JLabel("正在初始化资源",JLabel.CENTER);
-        jLabel.setBounds(0,0,200,100);
+        ImageIcon imageIcon = new ImageIcon("D:\\projects\\JavaClassDesign\\src\\main\\resources\\loading.gif");
+        JLabel jLabel = new JLabel(imageIcon);
+        jLabel.setBounds(0,0,200,80);
+        JLabel jLabel2 = new JLabel("正在连接数据库",JLabel.CENTER);
+        jLabel2.setBounds(0,70,200,20);
+        jFrame.add(jLabel2);
         jFrame.getContentPane().add(jLabel);
         jFrame.setVisible(true);
         SqlOperationImpl.getInstance();
-        startNewView(new LoginView());
+        jLabel2.setText("连接数据库成功");
+        jLabel2.updateUI();
+//        try {
+//            Thread.sleep(1000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+        startNewView(new MenuView());
     }
 
     @Override
