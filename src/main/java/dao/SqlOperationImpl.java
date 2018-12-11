@@ -9,7 +9,9 @@ import Model.Student;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class SqlOperationImpl implements SqlOperation {
 
@@ -117,20 +119,23 @@ public class SqlOperationImpl implements SqlOperation {
         return execute(s);
     }
 
-    public Grade getGradeByStudentName(String name) {
-        String s= String.format("select * from student where name=\"%s\"",name);
+    public List<Grade> getGradeByStudentName(String name) {
+        List<Grade> gradeList = new ArrayList<>();
+        String s= String.format("select * from grade where name=\"%s\"",name);
         try{
         PreparedStatement pre = connection.prepareStatement(s);
         ResultSet result = pre.executeQuery();
-        if (result.next()){
+        while (result.next()){
             Grade grade = new Grade();
             grade.setId(result.getString("id"));
             grade.setStuName(result.getString("name"));
             grade.setClassId(result.getString("class_id"));
             grade.setClassName(result.getString("class_name"));
             grade.setGrade(result.getInt("class_grade"));
-            return grade;
-               }
+            gradeList.add(grade);
+        }
+        result.close();
+        return gradeList;
         } catch(SQLException e){
             e.printStackTrace();
         }

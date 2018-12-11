@@ -1,5 +1,6 @@
 package UI;
 
+import Utils.LoginInfo;
 import dao.SqlOperationImpl;
 
 import javax.swing.*;
@@ -14,7 +15,7 @@ public class StartView extends BaseView {
         jFrame.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
         jFrame.setSize(200,100);
         jFrame.setLocationRelativeTo(null);
-        ImageIcon imageIcon = new ImageIcon("D:\\EclipseWorkspaces\\JavaExperience\\src\\main\\resources\\loading.gif");
+        ImageIcon imageIcon = new ImageIcon("D:\\projects\\JavaClassDesign\\src\\main\\resources\\loading.gif");
         JLabel jLabel = new JLabel(imageIcon);
         jLabel.setBounds(0,0,200,80);
         JLabel jLabel2 = new JLabel("正在连接数据库",JLabel.CENTER);
@@ -23,13 +24,16 @@ public class StartView extends BaseView {
         jFrame.getContentPane().add(jLabel);
         jFrame.setVisible(true);
         SqlOperationImpl.getInstance();
-        jLabel2.setText("连接数据库成功");
+        jLabel2.setText("正在连接Redis");
         jLabel2.updateUI();
-//        try {
-//            Thread.sleep(1000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        LoginInfo.getInstace();
+        jLabel2.setText("资源初始化成功");
+        jLabel2.updateUI();
         startNewView(new LoginView());
     }
 

@@ -6,6 +6,8 @@ import Model.Student;
 import dao.SqlOperation;
 import dao.SqlOperationImpl;
 
+import java.util.List;
+
 /**说明
  * 第一步：新建一个界面继承于BaseView,Alt+insert快捷键重写onCreate方法
  * 第二步：新建一个于界面对应的Presenter，比如LoginPresenter，用于处理业务逻辑，在Presenter里面引入对应界面的接口
@@ -18,6 +20,8 @@ import dao.SqlOperationImpl;
 
 public class Main {
     public static void main(String[] args) {
+//       CourseView courseView = new CourseView();
+//       courseView.show();
        StartView startView = new StartView();
        startView.show();
     }

@@ -6,6 +6,7 @@ import Model.Class;
 import Model.Student;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public interface SqlOperation {
     void close() throws SQLException;
@@ -18,7 +19,7 @@ public interface SqlOperation {
     Boolean insertGrade(Grade arc);
     Boolean delGrade(String id,String class_id);
     Boolean modifyGrade(String id,String class_id,String key,float value);
-    Grade getGradeByStudentName(String name);
+    List<Grade> getGradeByStudentName(String name);
     Grade getGrade(String name,String class_name);
 
 
