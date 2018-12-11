@@ -14,15 +14,15 @@ public class LoginPresenter {
         this.loginView = loginView;
     }
 
-    public void login(){
+    public void login(final String user, final String password){
         new Thread(new Runnable() {
             @Override
             public void run() {
                 SqlOperation operation = SqlOperationImpl.getInstance();
-                Adminstrator adminstrator = operation.getAdmin("13169166450");
-                if (adminstrator != null){
-                    operation.updateAdmin("13169166451","login_count",adminstrator.getLoginCount()+1);
-                    operation.updateAdmin("13169166451","last_login_date",new Date());
+                Adminstrator adminstrator = operation.getAdmin(user);
+                if (adminstrator != null && adminstrator.getPassword().equals(password)){
+                    operation.updateAdmin(user,"login_count",adminstrator.getLoginCount()+1);
+                    operation.updateAdmin(user,"last_login_date",new Date());
                     loginView.loginResult(true);
                 }else {
                     loginView.loginResult(false);
