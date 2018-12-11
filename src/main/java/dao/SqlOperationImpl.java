@@ -200,7 +200,6 @@ public class SqlOperationImpl implements SqlOperation {
             DateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String date = simpleDateFormat.format((Date) value);
             s = String.format("update admin set %s = \"%s\" where phone = \"%s\"",key,date,phone);
-            System.out.println(s);
         }
         return execute(s);
     }

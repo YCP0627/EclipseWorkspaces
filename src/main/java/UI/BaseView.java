@@ -1,5 +1,8 @@
 package UI;
 
+import dao.SqlOperation;
+import dao.SqlOperationImpl;
+
 import javax.swing.*;
 
 public abstract class BaseView {
