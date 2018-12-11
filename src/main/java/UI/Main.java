@@ -18,7 +18,11 @@ import dao.SqlOperationImpl;
 
 public class Main {
     public static void main(String[] args) {
-       StartView startView = new StartView();
-       startView.show();
+      /* StartView startView = new StartView();
+       startView.show();*/
+      MenuView menu = new MenuView();
+      menu.show();
+
+
     }
 }
