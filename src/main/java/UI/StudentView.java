@@ -113,11 +113,5 @@ public class StudentView extends BaseView {
         }
         );
 
-
-
-
-
-
-
     }
 }
