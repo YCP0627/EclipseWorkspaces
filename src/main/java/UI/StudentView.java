@@ -18,8 +18,8 @@ public class StudentView extends BaseView {
     @Override
     protected void onCreate() {
         super.onCreate();
-       //查询页面
-        ImageIcon img1 = new ImageIcon("D:\\EclipseWorkspaces\\JavaExperience\\target\\classes\\查找学生.png");
+       //主界面
+        ImageIcon img1 = new ImageIcon("src\\main\\resources\\查找学生.png");
         img1.setImage(img1.getImage().getScaledInstance(60,60,Image.SCALE_SMOOTH));
         final JLabel jLabel = new JLabel("查找学生信息",img1,JLabel.HORIZONTAL);
         jLabel.setHorizontalTextPosition(JLabel.CENTER);
@@ -29,7 +29,7 @@ public class StudentView extends BaseView {
         jLabel.setBackground(Color.black);
         //jFrame.getContentPane().add(jLabel);
 
-        ImageIcon img2 = new ImageIcon("D:\\EclipseWorkspaces\\JavaExperience\\target\\classes\\增加学生.png");
+        ImageIcon img2 = new ImageIcon("src\\main\\resources\\增加学生.png");
         img2.setImage(img2.getImage().getScaledInstance(60,60,Image.SCALE_SMOOTH));
         final JLabel jLabel1 = new JLabel("添加学生信息",img2,JLabel.HORIZONTAL);
         jLabel1.setHorizontalTextPosition(JLabel.CENTER);
@@ -38,7 +38,7 @@ public class StudentView extends BaseView {
         //jLabel1.setBounds(200,200,100,100);
         //Frame.getContentPane().add(jLabel1);
 
-        ImageIcon img3 = new ImageIcon("D:\\EclipseWorkspaces\\JavaExperience\\target\\classes\\删除学生.png");
+        ImageIcon img3 = new ImageIcon("src\\main\\resources\\删除学生.png");
         img3.setImage(img3.getImage().getScaledInstance(60,60,Image.SCALE_SMOOTH));
         final JLabel jLabel2 = new JLabel("删除学生信息",img3,JLabel.HORIZONTAL);
         jLabel2.setHorizontalTextPosition(JLabel.CENTER);
@@ -47,16 +47,16 @@ public class StudentView extends BaseView {
         //jLabel2.setBounds(350,200,100,100);
         //jFrame.getContentPane().add(jLabel2);
 
-        ImageIcon img4 = new ImageIcon("D:\\EclipseWorkspaces\\JavaExperience\\target\\classes\\修改学生.png");
+        ImageIcon img4 = new ImageIcon("src\\main\\resources\\修改学生.png");
         img4.setImage(img4.getImage().getScaledInstance(60,60,Image.SCALE_SMOOTH));
-        final JLabel jLabel3 = new JLabel("添加管理员",img4,JLabel.HORIZONTAL);
+        final JLabel jLabel3 = new JLabel("修改学生信息",img4,JLabel.HORIZONTAL);
         jLabel3.setHorizontalTextPosition(JLabel.CENTER);
         jLabel3.setVerticalTextPosition(JLabel.BOTTOM);
         jLabel3.setSize(100,120);
         //jLabel3.setBounds(500,200,100,100);
         //jFrame.getContentPane().add(jLabel3);
 
-        JPanel jPanel = new JPanel();
+        final JPanel jPanel = new JPanel();
         jPanel.setLayout(new GridLayout(4,1));
         jPanel.setSize(100,540);
         jPanel.add(jLabel);
@@ -81,7 +81,7 @@ public class StudentView extends BaseView {
         final DefaultTableModel model = new DefaultTableModel(studentInfo,0);
         JTable jTable = new JTable(model);
         //jTable.setRowHeight(50);
-        JPanel jPanel1 = new JPanel();
+        final JPanel jPanel1 = new JPanel();
         jPanel1.setLayout(null);
         JScrollPane jScrollPane = new JScrollPane(jTable);
         jScrollPane.setBounds(50,90,590,450);
@@ -112,6 +112,24 @@ public class StudentView extends BaseView {
             }
         }
         );
+
+
+        jLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                jPanel1.setVisible(true);
+
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+                jLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            }
+        });
+
 
     }
 }

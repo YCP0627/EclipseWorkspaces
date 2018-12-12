@@ -120,7 +120,7 @@ public class SqlOperationImpl implements SqlOperation {
     }
 
     public List<Grade> getGradeByStudentName(String name) {
-        List<Grade> gradeList = new ArrayList<>();
+        List<Grade> gradeList = new ArrayList<Grade>();
         String s= String.format("select * from grade where name=\"%s\"",name);
         try{
         PreparedStatement pre = connection.prepareStatement(s);
@@ -228,7 +228,7 @@ public class SqlOperationImpl implements SqlOperation {
     @Override
     public List<Class> getAllClass() {
         String s = "select * from class";
-        List<Class> classList = new ArrayList<>();
+        List<Class> classList = new ArrayList<Class>();
         try{
             PreparedStatement pre = connection.prepareStatement(s);
             ResultSet result = pre.executeQuery();

@@ -23,7 +23,7 @@ public class MenuView extends BaseView {
         jLabel7.setFont(new Font("宋体",Font.PLAIN, 10));
         jFrame.getContentPane().add(jLabel7);
 
-        ImageIcon img1 = new ImageIcon("D:\\EclipseWorkspaces\\JavaExperience\\target\\classes\\icon_学生.png");
+        ImageIcon img1 = new ImageIcon("src\\main\\resources\\icon_学生.png");
         img1.setImage(img1.getImage().getScaledInstance(50,50,Image.SCALE_SMOOTH));
         final JLabel jLabel = new JLabel("学生信息管理",img1,JLabel.HORIZONTAL);
         jLabel.setHorizontalTextPosition(JLabel.CENTER);
@@ -31,7 +31,7 @@ public class MenuView extends BaseView {
         jLabel.setBounds(50,200,100,100);
         jFrame.getContentPane().add(jLabel);
 
-        ImageIcon img2 = new ImageIcon("D:\\EclipseWorkspaces\\JavaExperience\\target\\classes\\icon_课程.png");
+        ImageIcon img2 = new ImageIcon("src\\main\\resources\\icon_课程.png");
         img2.setImage(img2.getImage().getScaledInstance(50,50,Image.SCALE_SMOOTH));
         final JLabel jLabel1 = new JLabel("课程信息管理",img2,JLabel.HORIZONTAL);
         jLabel1.setHorizontalTextPosition(JLabel.CENTER);
@@ -39,7 +39,7 @@ public class MenuView extends BaseView {
         jLabel1.setBounds(200,200,100,100);
         jFrame.getContentPane().add(jLabel1);
 
-        ImageIcon img3 = new ImageIcon("D:\\EclipseWorkspaces\\JavaExperience\\target\\classes\\icon_成绩.png");
+        ImageIcon img3 = new ImageIcon("src\\main\\resources\\icon_成绩.png");
         img3.setImage(img3.getImage().getScaledInstance(50,50,Image.SCALE_SMOOTH));
         final JLabel jLabel2 = new JLabel("成绩信息管理",img3,JLabel.HORIZONTAL);
         jLabel2.setHorizontalTextPosition(JLabel.CENTER);
@@ -47,7 +47,7 @@ public class MenuView extends BaseView {
         jLabel2.setBounds(350,200,100,100);
         jFrame.getContentPane().add(jLabel2);
 
-        ImageIcon img4 = new ImageIcon("D:\\EclipseWorkspaces\\JavaExperience\\target\\classes\\icon_管理员1.png");
+        ImageIcon img4 = new ImageIcon("src\\main\\resources\\icon_管理员1.png");
         img4.setImage(img4.getImage().getScaledInstance(50,50,Image.SCALE_SMOOTH));
         final JLabel jLabel3 = new JLabel("添加管理员",img4,JLabel.HORIZONTAL);
         jLabel3.setHorizontalTextPosition(JLabel.CENTER);
@@ -55,7 +55,7 @@ public class MenuView extends BaseView {
         jLabel3.setBounds(500,200,100,100);
         jFrame.getContentPane().add(jLabel3);
 
-        ImageIcon img5 = new ImageIcon("D:\\EclipseWorkspaces\\JavaExperience\\target\\classes\\icon_管理员2.png");
+        ImageIcon img5 = new ImageIcon("src\\main\\resources\\icon_管理员2.png");
         img5.setImage(img5.getImage().getScaledInstance(50,50,Image.SCALE_SMOOTH));
         final JLabel jLabel4 = new JLabel("删除管理员",img5,JLabel.HORIZONTAL);
         jLabel4.setHorizontalTextPosition(JLabel.CENTER);
@@ -68,6 +68,8 @@ public class MenuView extends BaseView {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
+                StudentView studentView = new StudentView();
+                startNewView(studentView);
             }
 
             @Override
@@ -94,6 +96,8 @@ public class MenuView extends BaseView {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
+                CourseView courseView = new CourseView();
+                startNewView(courseView);
             }
 
             @Override

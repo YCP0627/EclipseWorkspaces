@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TabController {
-    private static List<JPanel> jPanelList = new ArrayList<>();
+    private static List<JPanel> jPanelList = new ArrayList<JPanel>();
 
     public static void addPanel(JPanel jPanel){
         if (!jPanelList.contains(jPanel)){

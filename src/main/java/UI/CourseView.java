@@ -55,7 +55,7 @@ public class CourseView extends BaseView implements ICourseView {
         jcombo.setBackground(Color.WHITE);
         tab2.add(jcombo);
 
-        final JComboBox jComboBox = new JComboBox<>(tab2ClassNames);
+        final JComboBox jComboBox = new JComboBox(tab2ClassNames);
         jComboBox.setBounds(480,35,80,30);
         jComboBox.setBackground(Color.WHITE);
         tab2.add(jComboBox);
@@ -103,7 +103,7 @@ public class CourseView extends BaseView implements ICourseView {
         jcombo.setBackground(Color.WHITE);
         tab1.add(jcombo);
 
-        final JComboBox jComboBox = new JComboBox<>(className);
+        final JComboBox jComboBox = new JComboBox(className);
         jComboBox.setBounds(480,35,80,30);
         jComboBox.setBackground(Color.WHITE);
         tab1.add(jComboBox);
@@ -229,7 +229,7 @@ public class CourseView extends BaseView implements ICourseView {
             JOptionPane.showMessageDialog(jFrame,"没有相应的用户记录","提示",JOptionPane.WARNING_MESSAGE);
         }
         for (Grade grade : gradeList){
-            Vector<String> vector = new Vector<>();
+            Vector<String> vector = new Vector<String>();
             vector.add(grade.getId());
             vector.add(grade.getStuName());
             vector.add(grade.getClassId());
@@ -255,7 +255,7 @@ public class CourseView extends BaseView implements ICourseView {
         if (grade == null){
             JOptionPane.showMessageDialog(jFrame,"没有相应的用户记录","提示",JOptionPane.WARNING_MESSAGE);
         }
-        Vector<String> vector = new Vector<>();
+        Vector<String> vector = new Vector<String>();
         vector.add(grade.getId());
         vector.add(grade.getStuName());
         vector.add(grade.getClassId());

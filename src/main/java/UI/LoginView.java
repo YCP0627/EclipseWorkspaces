@@ -47,9 +47,11 @@ public class LoginView extends BaseView implements ILoginView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(e.getActionCommand().equals("登录")){
-                    String user = jTextField.getText();
+                    /*String user = jTextField.getText();
                     String password = new String(jPasswordField1.getPassword());
-                    loginPresenter.login(user,password);
+                    loginPresenter.login(user,password);*/
+                    MenuView menuView = new MenuView();
+                    startNewView(menuView);
                 }
             }
         };
