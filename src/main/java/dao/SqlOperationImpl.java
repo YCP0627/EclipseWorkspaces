@@ -143,7 +143,23 @@ public class SqlOperationImpl implements SqlOperation {
     }
 
     public Grade getGrade(String name,String class_name){
-        String s = String.format("select * from student where name=\"%s\"&&class_name=\"%s\"",name,class_name);
+        String s = String.format("select * from grade where name=\"%s\" and class_name=\"%s\"",name,class_name);
+        try{
+            PreparedStatement pre = connection.prepareStatement(s);
+            ResultSet result = pre.executeQuery();
+            if (result.next()){
+                Grade grade = new Grade();
+                grade.setId(result.getString("id"));
+                grade.setStuName(result.getString("name"));
+                grade.setClassId(result.getString("class_id"));
+                grade.setClassName(result.getString("class_name"));
+                grade.setGrade(result.getInt("class_grade"));
+                result.close();
+                return grade;
+            }
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
         return null;
     }
 
@@ -207,6 +223,30 @@ public class SqlOperationImpl implements SqlOperation {
             s = String.format("update admin set %s = \"%s\" where phone = \"%s\"",key,date,phone);
         }
         return execute(s);
+    }
+
+    @Override
+    public List<Class> getAllClass() {
+        String s = "select * from class";
+        List<Class> classList = new ArrayList<>();
+        try{
+            PreparedStatement pre = connection.prepareStatement(s);
+            ResultSet result = pre.executeQuery();
+            while (result.next()){
+                Class aClass = new Class();
+                aClass.setClassId(result.getString("class_id"));
+                aClass.setClassHour(result.getInt("class_hour"));
+                aClass.setName(result.getString("class_name"));
+                aClass.setObligatory(result.getBoolean("class_proprety"));
+                aClass.setScore(result.getFloat("score"));
+                aClass.setTeacher(result.getString("teacher"));
+                classList.add(aClass);
+            }
+            return classList;
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public Adminstrator getAdmin(String phone) {

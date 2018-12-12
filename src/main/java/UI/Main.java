@@ -20,9 +20,9 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-//       CourseView courseView = new CourseView();
-//       courseView.show();
-       StartView startView = new StartView();
-       startView.show();
+       CourseView courseView = new CourseView();
+       courseView.show();
+//       StartView startView = new StartView();
+//       startView.show();
     }
 }

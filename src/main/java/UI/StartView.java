@@ -4,7 +4,6 @@ import Utils.LoginInfo;
 import dao.SqlOperationImpl;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class StartView extends BaseView {
 
@@ -31,7 +30,7 @@ public class StartView extends BaseView {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        LoginInfo.getInstace();
+        LoginInfo.getInstance();
         jLabel2.setText("资源初始化成功");
         jLabel2.updateUI();
         startNewView(new LoginView());

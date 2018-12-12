@@ -1,5 +1,6 @@
 package Utils;
 
+import Model.Adminstrator;
 import redis.clients.jedis.Jedis;
 
 public class LoginInfo {
@@ -13,7 +14,7 @@ public class LoginInfo {
         jedis = redisUtil.redisPoolFactory().getResource();
     }
 
-    public static LoginInfo getInstace(){
+    public static LoginInfo getInstance(){
         if (loginInfo == null){
             synchronized (LoginInfo.class){
                 if (loginInfo == null){
@@ -23,5 +24,18 @@ public class LoginInfo {
             }
         }
         return loginInfo;
+    }
+
+    public void setAdminInRedis(Adminstrator admin){
+        jedis.set("java_admin_name",admin.getName());
+        jedis.set("java_admin_style",admin.getStyle());
+    }
+
+    public String getLoginName(){
+        return jedis.get("java_admin_name");
+    }
+
+    public String getLoginStyle(){
+        return jedis.get("java_admin_style");
     }
 }
