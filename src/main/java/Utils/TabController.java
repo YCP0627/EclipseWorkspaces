@@ -10,6 +10,8 @@ public class TabController {
     public static void addPanel(JPanel jPanel){
         if (!jPanelList.contains(jPanel)){
             jPanelList.add(jPanel);
+        }else {
+            System.out.println("已经存在");
         }
     }
 

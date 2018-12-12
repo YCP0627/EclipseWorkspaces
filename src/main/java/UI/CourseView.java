@@ -9,10 +9,7 @@ import com.mysql.cj.util.StringUtils;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.List;
 import java.util.Vector;
 
@@ -20,6 +17,7 @@ public class CourseView extends BaseView implements ICourseView {
 
     private CoursePresenter presenter;
     private DefaultTableModel tableModel;
+    private DefaultTableModel tableMode2;
     private String[] className;
     private JPanel tab1 = new JPanel();
     private JPanel tab2 = new JPanel();
@@ -30,6 +28,17 @@ public class CourseView extends BaseView implements ICourseView {
     @Override
     protected void onCreate() {
         super.onCreate();
+        //返回主界面
+        jFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        jFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                onDestory();
+            }
+        });
+
+
         jFrame.setTitle("学生成绩管理");
         jFrame.getContentPane().setBackground(Color.WHITE);
         presenter = new CoursePresenter(this);
@@ -44,8 +53,8 @@ public class CourseView extends BaseView implements ICourseView {
     }
 
     private void tab2RightUIInit() {
-        String[] tab2ClassNames = className.clone();
-        tab2ClassNames[0] = "课程";
+        String[] newName = className.clone();
+        newName[0] = "选择课程";
         final JTextField jTextField = new JTextField();
         jTextField.setBounds(160,35,300,30);
         tab2.add(jTextField);
@@ -55,7 +64,7 @@ public class CourseView extends BaseView implements ICourseView {
         jcombo.setBackground(Color.WHITE);
         tab2.add(jcombo);
 
-        final JComboBox jComboBox = new JComboBox(tab2ClassNames);
+        final JComboBox jComboBox = new JComboBox<>(newName);
         jComboBox.setBounds(480,35,80,30);
         jComboBox.setBackground(Color.WHITE);
         tab2.add(jComboBox);
@@ -75,10 +84,9 @@ public class CourseView extends BaseView implements ICourseView {
         });
 
         tab2.add(jButton);
-
         String[] names = { "学号", "姓名", "班级", "课程成绩" };
-        tableModel = new DefaultTableModel(names,1);
-        JTable table = new JTable(tableModel);
+        tableMode2 = new DefaultTableModel(names,1);
+        JTable table = new JTable(tableMode2);
         JScrollPane scrollpane=new JScrollPane(table);
         scrollpane.setBounds(50,100,615,450);
         tab2.add(scrollpane);
@@ -103,7 +111,7 @@ public class CourseView extends BaseView implements ICourseView {
         jcombo.setBackground(Color.WHITE);
         tab1.add(jcombo);
 
-        final JComboBox jComboBox = new JComboBox(className);
+        final JComboBox jComboBox = new JComboBox<>(className);
         jComboBox.setBounds(480,35,80,30);
         jComboBox.setBackground(Color.WHITE);
         tab1.add(jComboBox);
@@ -118,6 +126,7 @@ public class CourseView extends BaseView implements ICourseView {
                 String name = jTextField.getText();
                 if (StringUtils.isEmptyOrWhitespaceOnly(name)){
                     JOptionPane.showMessageDialog(jFrame,"搜索信息不能为空","提示",JOptionPane.WARNING_MESSAGE);
+                    return;
                 }
                 if (selectClass.equals("全部")){
                     presenter.queryGradeByName(name);
@@ -229,7 +238,7 @@ public class CourseView extends BaseView implements ICourseView {
             JOptionPane.showMessageDialog(jFrame,"没有相应的用户记录","提示",JOptionPane.WARNING_MESSAGE);
         }
         for (Grade grade : gradeList){
-            Vector<String> vector = new Vector<String>();
+            Vector<String> vector = new Vector<>();
             vector.add(grade.getId());
             vector.add(grade.getStuName());
             vector.add(grade.getClassId());
@@ -255,7 +264,7 @@ public class CourseView extends BaseView implements ICourseView {
         if (grade == null){
             JOptionPane.showMessageDialog(jFrame,"没有相应的用户记录","提示",JOptionPane.WARNING_MESSAGE);
         }
-        Vector<String> vector = new Vector<String>();
+        Vector<String> vector = new Vector<>();
         vector.add(grade.getId());
         vector.add(grade.getStuName());
         vector.add(grade.getClassId());

@@ -22,5 +22,7 @@ public class Main {
     public static void main(String[] args) {
        StartView startView = new StartView();
        startView.show();
+//        CourseView courseView = new CourseView();
+//        courseView.show();
     }
 }

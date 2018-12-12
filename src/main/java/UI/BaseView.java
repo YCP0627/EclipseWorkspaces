@@ -1,5 +1,6 @@
 package UI;
 
+import Utils.JFrameController;
 import dao.SqlOperation;
 import dao.SqlOperationImpl;
 
@@ -35,7 +36,7 @@ public abstract class BaseView {
 
     //关闭界面
     protected void onDestory(){
-        jFrame.dispose();
+        JFrameController.removeFrame(jFrame);
     }
 
     public void show(){
@@ -48,5 +49,6 @@ public abstract class BaseView {
     protected void startNewView(BaseView baseView){
         jFrame.setVisible(false);
         baseView.show();
+        JFrameController.addFrame(baseView.jFrame);
     }
 }
