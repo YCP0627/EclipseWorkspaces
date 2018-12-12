@@ -150,7 +150,7 @@ public class CourseView extends BaseView implements ICourseView {
         left.setBounds(0,0,120,600);
         jFrame.add(left);
 
-        ImageIcon imageIcon = new ImageIcon("D:\\projects\\JavaClassDesign\\src\\main\\resources\\任务监控和查询.png");
+        ImageIcon imageIcon = new ImageIcon("src\\main\\resources\\任务监控和查询.png");
         imageIcon.setImage(imageIcon.getImage().getScaledInstance(60,60,Image.SCALE_SMOOTH));
         final JLabel search = new JLabel(imageIcon);
         search.setText("查找成绩");
@@ -162,7 +162,7 @@ public class CourseView extends BaseView implements ICourseView {
         jLabel.setBounds(0,90,120,20);
         left.add(jLabel);
 
-        ImageIcon imageIcon1 = new ImageIcon("D:\\projects\\JavaClassDesign\\src\\main\\resources\\工单管理.png");
+        ImageIcon imageIcon1 = new ImageIcon("src\\main\\resources\\工单管理.png");
         imageIcon1.setImage(imageIcon1.getImage().getScaledInstance(60,60,Image.SCALE_SMOOTH));
         final JLabel insert = new JLabel(imageIcon1);
         insert.setBounds(30,175,60,60);
@@ -173,7 +173,7 @@ public class CourseView extends BaseView implements ICourseView {
         jLabe2.setBounds(30,240,60,20);
         left.add(jLabe2);
 
-        ImageIcon imageIcon2 = new ImageIcon("D:\\projects\\JavaClassDesign\\src\\main\\resources\\检测管理.png");
+        ImageIcon imageIcon2 = new ImageIcon("src\\main\\resources\\检测管理.png");
         imageIcon2.setImage(imageIcon2.getImage().getScaledInstance(60,60,Image.SCALE_AREA_AVERAGING));
 
         final JLabel controller = new JLabel(imageIcon2);
@@ -185,7 +185,7 @@ public class CourseView extends BaseView implements ICourseView {
         jLabe3.setBounds(30,390,60,20);
         left.add(jLabe3);
 
-        ImageIcon imageIcon3 = new ImageIcon("D:\\projects\\JavaClassDesign\\src\\main\\resources\\任务监控001.png");
+        ImageIcon imageIcon3 = new ImageIcon("src\\main\\resources\\任务监控001.png");
         imageIcon3.setImage(imageIcon3.getImage().getScaledInstance(60,60,Image.SCALE_AREA_AVERAGING));
 
         final JLabel update = new JLabel(imageIcon3);

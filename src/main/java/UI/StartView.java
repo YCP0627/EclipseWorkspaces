@@ -14,7 +14,7 @@ public class StartView extends BaseView {
         jFrame.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
         jFrame.setSize(200,100);
         jFrame.setLocationRelativeTo(null);
-        ImageIcon imageIcon = new ImageIcon("D:\\projects\\JavaClassDesign\\src\\main\\resources\\loading.gif");
+        ImageIcon imageIcon = new ImageIcon("src\\main\\resources\\loading.gif");
         JLabel jLabel = new JLabel(imageIcon);
         jLabel.setBounds(0,0,200,80);
         JLabel jLabel2 = new JLabel("正在连接数据库",JLabel.CENTER);
