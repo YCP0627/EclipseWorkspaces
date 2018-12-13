@@ -6,6 +6,8 @@ import Utils.TabController;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class ClassView extends BaseView {
     TabController tabController = new TabController();
@@ -13,6 +15,7 @@ public class ClassView extends BaseView {
     @Override
     protected void onCreate() {
         super.onCreate();
+        returnMain();
         searchJpanel();
     }
 
@@ -231,6 +234,26 @@ public class ClassView extends BaseView {
         tabController.addPanel(jPanelMod);
         jFrame.getContentPane().add(jPanelMod);
         jPanelMod.setVisible(false);
+    }
+
+    public void returnMain()
+    {
+        jFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        jFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                onDestory(); //写这个的话就是退回上一个界面。
+                //退出主界面用下面这个
+//                try {
+//                    SqlOperationImpl.getInstance().close();
+//                } catch (SQLException e1) {
+//                    e1.printStackTrace();
+//                }finally {
+//                    System.exit(0);
+//                }
+            }
+        });
     }
 
 }

@@ -1240,9 +1240,10 @@
     </key>
     <column id="304" parent="283" name="class_id">
       <Position>1</Position>
-      <Comment>课程编号号</Comment>
-      <DataType>varchar(20)|0s</DataType>
+      <Comment>课程编号</Comment>
+      <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="305" parent="283" name="class_name">
@@ -1310,7 +1311,7 @@
     <column id="314" parent="284" name="class_id">
       <Position>4</Position>
       <Comment>课程编号</Comment>
-      <DataType>varchar(20)|0s</DataType>
+      <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>

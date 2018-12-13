@@ -284,4 +284,8 @@ public class CourseView extends BaseView implements ICourseView {
         vector.add(String.valueOf(grade.getGrade()));
         tableModel.addRow(vector);
     }
+
+
 }
+
+
