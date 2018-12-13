@@ -17,10 +17,11 @@ public interface SqlOperation {
     Student getStudentInfoByIdCard(String idCard);
 
     Boolean insertGrade(Grade arc);
-    Boolean delGrade(String id,String class_id);
+    Boolean delGrade(String id);
     Boolean modifyGrade(String id,String class_id,String key,float value);
     List<Grade> getGradeByStudentName(String name);
     Grade getGrade(String name,String class_name);
+    List<Grade> getGradeByStudentId(String id);
 
 
     Boolean insertClassInfo(Class c);
@@ -32,4 +33,6 @@ public interface SqlOperation {
     boolean updateAdmin(String phone,String key, Object value);
 
     List<Class> getAllClass();
+
+    Grade getGradeByClassAndId(String id, String selectClass);
 }
