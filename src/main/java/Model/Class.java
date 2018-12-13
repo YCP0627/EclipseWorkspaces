@@ -8,6 +8,7 @@ public class Class {
     private float score;
     private String teacher;
 
+
     public String getClassId() {
         return classId;
     }

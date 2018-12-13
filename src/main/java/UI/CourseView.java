@@ -2,16 +2,23 @@ package UI;
 
 import Model.Class;
 import Model.Grade;
+import Model.Student;
 import Presenter.CoursePresenter;
+import Utils.LoginInfo;
 import Utils.TabController;
 import com.mysql.cj.util.StringUtils;
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
+import dao.SqlOperation;
 import dao.SqlOperationImpl;
 
 import javax.swing.*;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -20,11 +27,16 @@ public class CourseView extends BaseView implements ICourseView {
     private CoursePresenter presenter;
     private DefaultTableModel tableModel;
     private DefaultTableModel tableMode2;
+    private DefaultTableModel tableMode3;
     private String[] className;
     private JPanel tab1 = new JPanel();
     private JPanel tab2 = new JPanel();
     private JPanel tab3 = new JPanel();
     private JPanel tab4 = new JPanel();
+    private List<Grade> gradeList;
+    private List<Class> classList;
+    private DefaultTableCellRenderer cellRenderer;
+
 
 
     @Override
@@ -36,20 +48,12 @@ public class CourseView extends BaseView implements ICourseView {
             @Override
             public void windowClosing(WindowEvent e) {
                 super.windowClosing(e);
-                onDestory(); //写这个的话就是退回上一个界面。
-                //退出主界面用下面这个
-//                try {
-//                    SqlOperationImpl.getInstance().close();
-//                } catch (SQLException e1) {
-//                    e1.printStackTrace();
-//                }finally {
-//                    System.exit(0);
-//                }
+                onDestory();
             }
         });
+        cellRenderer = new DefaultTableCellRenderer();
 
-        //上面的代码，将你的Jframe 添加上面的方法
-
+        cellRenderer.setHorizontalAlignment(JLabel.CENTER);
 
         jFrame.setTitle("学生成绩管理");
         jFrame.getContentPane().setBackground(Color.WHITE);
@@ -57,24 +61,164 @@ public class CourseView extends BaseView implements ICourseView {
         presenter.queryClassById();
         initTab(tab1);
         initTab(tab2);
+        tab2.setVisible(false);
         initTab(tab3);
+        tab3.setVisible(false);
         initTab(tab4);
+        tab4.setVisible(false);
         LeftUIInit();
         tab1RightUIInit();
         tab2RightUIInit();
+        tab3RightUIInit();
+        tab4RightUIInit();
+    }
+
+    private void tab4RightUIInit() {
+        JComboBox<String> classTitles = new JComboBox<String>(className);
+        classTitles.setBackground(Color.WHITE);
+        classTitles.setBounds(50,50,80,30);
+        tab4.add(classTitles);
+    }
+
+    private void tab3RightUIInit() {
+        final JTextField jTextField = new JTextField();
+        jTextField.setBounds(160,35,300,30);
+        tab3.add(jTextField);
+        final JComboBox jcombo = new JComboBox();
+        jcombo.addItem("姓名");
+        jcombo.addItem("学号");
+        jcombo.setBounds(50,35,80,30);
+        jcombo.setBackground(Color.WHITE);
+        tab3.add(jcombo);
+
+        final JComboBox jComboBox = new JComboBox<>(className);
+        jComboBox.setBounds(480,35,80,30);
+        jComboBox.setBackground(Color.WHITE);
+        tab3.add(jComboBox);
+
+        JButton jButton = new JButton("查找");
+        jButton.setBackground(Color.WHITE);
+        jButton.setBounds(580,35,80,30);
+        jButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String selectClass = className[jComboBox.getSelectedIndex()];
+                String name = jTextField.getText();
+                if (StringUtils.isEmptyOrWhitespaceOnly(name)){
+                    JOptionPane.showMessageDialog(jFrame,"搜索信息不能为空","提示",JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                if (jcombo.getSelectedIndex() == 0){
+                    if (selectClass.equals("全部")){
+                        System.out.println(LoginInfo.getInstance().getLoginName() +",您好");
+                        presenter.queryGradeByName(tableMode3,name);
+                    }else{
+                        presenter.queryGradeByNameAndClass(tableMode3,name,selectClass);
+                    }
+                }else {
+                    if (selectClass.equals("全部")){
+                        presenter.queryGradeById(tableMode3,name);
+                    }else{
+                        presenter.queryGradeByIdAndClass(tableMode3,name,selectClass);
+                    }
+                }
+            }
+        });
+
+        final JTextField delText = new JTextField();
+        delText.setToolTipText("请输入要删除的编号");
+        delText.setBounds(50,450,520,30);
+        tab3.add(delText);
+
+        JButton delButton = new JButton("删除");
+        delButton.setBounds(580,450,80,30);
+        delButton.setBackground(Color.WHITE);
+        tab3.add(delButton);
+        delButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (StringUtils.isEmptyOrWhitespaceOnly(delText.getText())){
+                    JOptionPane.showMessageDialog(jFrame,"不能为空","提示",JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                int id = Integer.valueOf(delText.getText());
+                boolean next = false;
+                for (Grade grade:gradeList){
+                    if (grade.getGradeId() == id){
+                        next=true;
+                        gradeList.remove(grade);
+                        break;
+                    }
+                }
+                if (next){
+                    presenter.delGrade(delText.getText());
+                    if (jcombo.getSelectedIndex() == 0){
+                        if (jComboBox.getSelectedIndex() == 0){
+                            presenter.queryGradeByName(tableMode3,jTextField.getText());
+                        }else {
+                            presenter.queryGradeByNameAndClass(tableMode3,jTextField.getText(),className[jComboBox.getSelectedIndex()-1]);
+                        }
+                    }else {
+                        if (jComboBox.getSelectedIndex() == 0){
+                            presenter.queryGradeById(tableMode3,jTextField.getText());
+                        }else {
+                            presenter.queryGradeByIdAndClass(tableMode3,jTextField.getText(),className[jComboBox.getSelectedIndex()-1]);
+                        }
+                    }
+
+                }else {
+                    JOptionPane.showMessageDialog(jFrame,"没有对应的记录","提示",JOptionPane.WARNING_MESSAGE);
+                }
+
+            }
+        });
+
+        tab3.add(jButton);
+        String[] names = { "学号", "姓名", "班级", "课程名称", "课程成绩","编号"};
+        tableMode3 = new DefaultTableModel(names,0);
+        JTable table = new JTable(tableMode3){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 4;
+            }
+        };
+        table.setDefaultRenderer(Object.class,cellRenderer);
+        tableMode3.addTableModelListener(new TableModelListener() {
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                if (e.getColumn() == 4){
+                    int i = e.getFirstRow();
+                    presenter.updateGrade(gradeList.get(i).getId(),gradeList.get(i).getClassId(),"class_grade",
+                            Float.valueOf(tableMode3.getValueAt(i,4).toString()));
+                }
+            }
+        });
+        JScrollPane scrollpane=new JScrollPane(table);
+        scrollpane.setBounds(50,100,615,330);
+        tab3.add(scrollpane);
     }
 
     private void tab2RightUIInit() {
         String[] newName = className.clone();
         newName[0] = "选择课程";
         final JTextField jTextField = new JTextField();
-        jTextField.setBounds(160,35,300,30);
+        jTextField.setBounds(85,35,220,30);
         tab2.add(jTextField);
-        JComboBox jcombo = new JComboBox();
-        jcombo.addItem("学号");
-        jcombo.setBounds(50,35,80,30);
-        jcombo.setBackground(Color.WHITE);
-        tab2.add(jcombo);
+
+        final JLabel xuehao = new JLabel("学号");
+        xuehao.setBounds(50,35,80,30);
+        xuehao.setBackground(Color.WHITE);
+        tab2.add(xuehao);
+
+
+        JLabel score = new JLabel("分数");
+        score.setBounds(330,35,40,30);
+        score.setBackground(Color.WHITE);
+        tab2.add(score);
+
+        final JTextField scoreText = new JTextField();
+        scoreText.setBounds(370,35,80,30);
+        tab2.add(scoreText);
 
         final JComboBox jComboBox = new JComboBox<>(newName);
         jComboBox.setBounds(480,35,80,30);
@@ -91,14 +235,28 @@ public class CourseView extends BaseView implements ICourseView {
                 String name = jTextField.getText();
                 if (StringUtils.isEmptyOrWhitespaceOnly(name)){
                     JOptionPane.showMessageDialog(jFrame,"搜索信息不能为空","提示",JOptionPane.WARNING_MESSAGE);
+                }else if (jComboBox.getSelectedIndex() == 0){
+                    JOptionPane.showMessageDialog(jFrame,"请选择一门课程","提示",JOptionPane.WARNING_MESSAGE);
+                } else {
+                    presenter.insertGrade(jTextField.getText(),scoreText.getText(),classList.get(jComboBox.getSelectedIndex()-1));
+                    Student student = SqlOperationImpl.getInstance().getStudentInfoById(jTextField.getText());
+                    if (student!=null){
+                        presenter.queryGradeByName(tableMode2,student.getName());
+                    }
                 }
             }
         });
 
         tab2.add(jButton);
-        String[] names = { "学号", "姓名", "班级", "课程成绩" };
-        tableMode2 = new DefaultTableModel(names,1);
-        JTable table = new JTable(tableMode2);
+        String[] names = { "学号", "姓名", "班级", "课程名称" ,"课程成绩"};
+        tableMode2 = new DefaultTableModel(names,0);
+        JTable table = new JTable(tableMode2){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        table.setDefaultRenderer(Object.class,cellRenderer);
         JScrollPane scrollpane=new JScrollPane(table);
         scrollpane.setBounds(50,100,615,450);
         tab2.add(scrollpane);
@@ -116,7 +274,7 @@ public class CourseView extends BaseView implements ICourseView {
         final JTextField jTextField = new JTextField();
         jTextField.setBounds(160,35,300,30);
         tab1.add(jTextField);
-        JComboBox jcombo = new JComboBox();
+        final JComboBox jcombo = new JComboBox();
         jcombo.addItem("姓名");
         jcombo.addItem("学号");
         jcombo.setBounds(50,35,80,30);
@@ -140,11 +298,20 @@ public class CourseView extends BaseView implements ICourseView {
                     JOptionPane.showMessageDialog(jFrame,"搜索信息不能为空","提示",JOptionPane.WARNING_MESSAGE);
                     return;
                 }
-                if (selectClass.equals("全部")){
-                    presenter.queryGradeByName(name);
+                if (jcombo.getSelectedIndex() == 0){
+                    if (selectClass.equals("全部")){
+                        presenter.queryGradeByName(tableModel,name);
+                    }else {
+                        presenter.queryGradeByNameAndClass(tableModel,name,selectClass);
+                    }
                 }else {
-                    presenter.queryGradeByNameAndClass(name,selectClass);
+                    if (selectClass.equals("全部")){
+                        presenter.queryGradeById(tableModel,name);
+                    }else {
+                        presenter.queryGradeByIdAndClass(tableModel,name,selectClass);
+                    }
                 }
+
             }
         });
 
@@ -159,6 +326,7 @@ public class CourseView extends BaseView implements ICourseView {
                 return false;
             }
         };
+        table.setDefaultRenderer(Object.class,cellRenderer);
         JScrollPane scrollpane=new JScrollPane(table);
         scrollpane.setBounds(50,100,615,450);
         tab1.add(scrollpane);
@@ -244,8 +412,9 @@ public class CourseView extends BaseView implements ICourseView {
 
 
     @Override
-    public void getGradeByName(List<Grade> gradeList) {
-        tableModel.setRowCount(0);
+    public void getGradeByName(DefaultTableModel model,List<Grade> gradeList) {
+        model.setRowCount(0);
+        this.gradeList = gradeList;
         if (gradeList.size() == 0){
             JOptionPane.showMessageDialog(jFrame,"没有相应的用户记录","提示",JOptionPane.WARNING_MESSAGE);
         }
@@ -253,15 +422,17 @@ public class CourseView extends BaseView implements ICourseView {
             Vector<String> vector = new Vector<>();
             vector.add(grade.getId());
             vector.add(grade.getStuName());
-            vector.add(grade.getClassId());
+            vector.add(grade.getBanji());
             vector.add(grade.getClassName());
             vector.add(String.valueOf(grade.getGrade()));
-            tableModel.addRow(vector);
-        }
+            vector.add(String.valueOf(grade.getGradeId()));
+            model.addRow(vector);
+    }
     }
 
     @Override
     public void getClassName(List<Class> classList) {
+        this.classList = classList;
         int size = classList.size();
         className = new String[size+1];
         className[0] = "全部";
@@ -271,21 +442,39 @@ public class CourseView extends BaseView implements ICourseView {
     }
 
     @Override
-    public void getGradeByNameAndClass(Grade grade) {
-        tableModel.setRowCount(0);
+    public void getGradeByNameAndClass(DefaultTableModel model,Grade grade) {
+        model.setRowCount(0);
+        if (gradeList!=null){
+            gradeList.clear();
+        }else {
+            gradeList = new ArrayList<>();
+        }
         if (grade == null){
             JOptionPane.showMessageDialog(jFrame,"没有相应的用户记录","提示",JOptionPane.WARNING_MESSAGE);
+            return;
         }
+        gradeList.add(grade);
         Vector<String> vector = new Vector<>();
         vector.add(grade.getId());
         vector.add(grade.getStuName());
-        vector.add(grade.getClassId());
+        vector.add(grade.getBanji());
         vector.add(grade.getClassName());
         vector.add(String.valueOf(grade.getGrade()));
-        tableModel.addRow(vector);
+        vector.add(String.valueOf(grade.getGradeId()));
+        model.addRow(vector);
     }
 
+    @Override
+    public void delCourseResult(Boolean delGrade) {
+        JOptionPane.showMessageDialog(jFrame,"删除成功","提示",JOptionPane.INFORMATION_MESSAGE);
+    }
 
+    @Override
+    public void insertResult(boolean b, String s) {
+        if (b){
+            JOptionPane.showMessageDialog(jFrame,s,"提示",JOptionPane.INFORMATION_MESSAGE);
+        }else {
+            JOptionPane.showMessageDialog(jFrame,s,"提示",JOptionPane.WARNING_MESSAGE);
+        }
+    }
 }
-
-

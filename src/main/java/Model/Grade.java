@@ -1,12 +1,29 @@
 package Model;
 
 public class Grade {
+    private int gradeId;
     private String id;
     private String stuName;
     private String classId;
     private String className;
     private float grade;
+    private String banji;
 
+    public String getBanji() {
+        return banji;
+    }
+
+    public void setBanji(String banji) {
+        this.banji = banji;
+    }
+
+    public int getGradeId() {
+        return gradeId;
+    }
+
+    public void setGradeId(int gradeId) {
+        this.gradeId = gradeId;
+    }
 
     public String getId() {
         return id;

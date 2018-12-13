@@ -73,7 +73,6 @@ public class SqlOperationImpl implements SqlOperation {
             s = String.format("update student set %s = \"%d\" where id = \"%s\"",key,(Integer)value,id);
         }
 
-
         return execute(s);
     }
 
@@ -123,8 +122,8 @@ public class SqlOperationImpl implements SqlOperation {
         return execute(s);
     }
 
-    public Boolean delGrade(String id,String class_id) {
-        String s=String.format("delete from grade where id=\"%s\"&&class_id=\"%s\" ",id,class_id);
+    public Boolean delGrade(String id) {
+        String s=String.format("delete from grade where grade_id = %s ",id);
         return execute(s);
     }
 
@@ -141,6 +140,7 @@ public class SqlOperationImpl implements SqlOperation {
         ResultSet result = pre.executeQuery();
         while (result.next()){
             Grade grade = new Grade();
+            grade.setGradeId(result.getInt("grade_id"));
             grade.setId(result.getString("id"));
             grade.setStuName(result.getString("name"));
             grade.setClassId(result.getString("class_id"));
@@ -163,6 +163,7 @@ public class SqlOperationImpl implements SqlOperation {
             ResultSet result = pre.executeQuery();
             if (result.next()){
                 Grade grade = new Grade();
+                grade.setGradeId(result.getInt("grade_id"));
                 grade.setId(result.getString("id"));
                 grade.setStuName(result.getString("name"));
                 grade.setClassId(result.getString("class_id"));
@@ -171,6 +172,31 @@ public class SqlOperationImpl implements SqlOperation {
                 result.close();
                 return grade;
             }
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public List<Grade> getGradeByStudentId(String id) {
+        List<Grade> gradeList = new ArrayList<Grade>();
+        String s= String.format("select * from grade where id=\"%s\"",id);
+        try{
+            PreparedStatement pre = connection.prepareStatement(s);
+            ResultSet result = pre.executeQuery();
+            while (result.next()){
+                Grade grade = new Grade();
+                grade.setId(result.getString("id"));
+                grade.setStuName(result.getString("name"));
+                grade.setClassId(result.getString("class_id"));
+                grade.setClassName(result.getString("class_name"));
+                grade.setGrade(result.getInt("class_grade"));
+                grade.setGradeId(result.getInt("grade_id"));
+                gradeList.add(grade);
+            }
+            result.close();
+            return gradeList;
         } catch(SQLException e){
             e.printStackTrace();
         }
@@ -257,6 +283,29 @@ public class SqlOperationImpl implements SqlOperation {
                 classList.add(aClass);
             }
             return classList;
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Grade getGradeByClassAndId(String id, String selectClass) {
+        String s = String.format("select * from grade where id=\"%s\" and class_name=\"%s\"",id,selectClass);
+        try{
+            PreparedStatement pre = connection.prepareStatement(s);
+            ResultSet result = pre.executeQuery();
+            if (result.next()){
+                Grade grade = new Grade();
+                grade.setId(result.getString("id"));
+                grade.setStuName(result.getString("name"));
+                grade.setClassId(result.getString("class_id"));
+                grade.setClassName(result.getString("class_name"));
+                grade.setGradeId(result.getInt("grade_id"));
+                grade.setGrade(result.getInt("class_grade"));
+                result.close();
+                return grade;
+            }
         } catch(SQLException e){
             e.printStackTrace();
         }
