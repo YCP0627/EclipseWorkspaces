@@ -13,6 +13,7 @@ public interface SqlOperation {
     Boolean insertStudentInfo(Student student);
     Boolean delStudentInfo(String id);
     Boolean modifyStudentInfo(String id,String key,Object value);
+    Boolean modifyStudentInfo1(String id,String key,String value);
     Student getStudentInfoById(String id);
     Student getStudentInfoByIdCard(String idCard);
 

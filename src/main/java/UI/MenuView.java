@@ -1,17 +1,44 @@
 package UI;
 
+import Utils.LoginInfo;
+import dao.SqlOperationImpl;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 
 public class MenuView extends BaseView {
+    public void closeCon(){
+        jFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        jFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                //onDestory(); //写这个的话就是退回上一个界面。
+                //退出主界面用下面这个
+                try {
+                    SqlOperationImpl.getInstance().close();
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }finally {
+                    System.exit(0);
+                }
+            }
+        });
+
+    }
     @Override
     protected void onCreate() {
         super.onCreate();
+        closeCon();
         jFrame.setSize(800,500);
         jFrame.getContentPane().setBackground(Color.white);
-
+        System.out.println(LoginInfo.getInstance().getLoginName());
+        System.out.println(LoginInfo.getInstance().getLoginStyle());
         JLabel jLabel6 = new JLabel("功能宝箱");
         jLabel6.setBounds(350,50,300,40);
         jLabel6.setFont(new Font("宋体",Font.BOLD, 20));
@@ -83,6 +110,8 @@ public class MenuView extends BaseView {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
+                ClassView classView = new ClassView();
+                startNewView(classView);
             }
 
             @Override

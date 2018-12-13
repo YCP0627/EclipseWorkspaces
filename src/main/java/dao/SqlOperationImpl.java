@@ -55,7 +55,7 @@ public class SqlOperationImpl implements SqlOperation {
         String s = String.format("insert into student(id,name,sex,age,idCard,major,className)" +
                 " values(\"%s\",\"%s\",\"%s\",%d,\"%s\",\"%s\",\"%s\") ", student.getId(),student.getName(),student.getSex(),student.getAge(),
                 student.getIdCard(),student.getMajor(),student.getClassName());
-        System.out.println(s);
+        //System.out.println(s);
         return execute(s);
     }
 
@@ -73,7 +73,21 @@ public class SqlOperationImpl implements SqlOperation {
             s = String.format("update student set %s = \"%d\" where id = \"%s\"",key,(Integer)value,id);
         }
 
+
         return execute(s);
+    }
+
+   public Boolean modifyStudentInfo1(String id,String key,String value){
+        String s = null;
+        String s1="age";
+        if(key.equals(s1)){
+            int d = Integer.valueOf(value);
+            s = String.format("update student set %s = %d where id = \"%s\"",key,d,id);
+        }
+        else{
+            s = String.format("update student set %s = \"%s\" where id = \"%s\"",key,value,id);
+        }
+        return  execute(s);
     }
 
     public Student getStudentInfoById(String id) {

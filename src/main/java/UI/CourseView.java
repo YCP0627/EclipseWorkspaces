@@ -5,11 +5,13 @@ import Model.Grade;
 import Presenter.CoursePresenter;
 import Utils.TabController;
 import com.mysql.cj.util.StringUtils;
+import dao.SqlOperationImpl;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Vector;
 
@@ -34,9 +36,19 @@ public class CourseView extends BaseView implements ICourseView {
             @Override
             public void windowClosing(WindowEvent e) {
                 super.windowClosing(e);
-                onDestory();
+                onDestory(); //写这个的话就是退回上一个界面。
+                //退出主界面用下面这个
+//                try {
+//                    SqlOperationImpl.getInstance().close();
+//                } catch (SQLException e1) {
+//                    e1.printStackTrace();
+//                }finally {
+//                    System.exit(0);
+//                }
             }
         });
+
+        //上面的代码，将你的Jframe 添加上面的方法
 
 
         jFrame.setTitle("学生成绩管理");
