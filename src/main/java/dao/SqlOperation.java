@@ -30,8 +30,12 @@ public interface SqlOperation {
     Boolean modifyClassInfo(String id,String key,String  value);
     Class getClassInfoById(String name);
 
+    void modifyGradeName(String id,String studentName) throws SQLException;
+
     Adminstrator getAdmin(String phone);
-    boolean updateAdmin(String phone,String key, Object value);
+    Boolean updateAdmin(String phone,String key, Object value);
+    Boolean delAdmi(String phone);
+
 
     List<Class> getAllClass();
 
