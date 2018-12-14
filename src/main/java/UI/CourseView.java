@@ -343,35 +343,35 @@ public class CourseView extends BaseView implements ICourseView {
         imageIcon.setImage(imageIcon.getImage().getScaledInstance(60,60,Image.SCALE_SMOOTH));
         final JLabel search = new JLabel(imageIcon);
         search.setText("查找成绩");
-        search.setBounds(30,25,60,60);
+        search.setBounds(23,25,60,60);
         left.add(search);
         addClickListener(search,tab1);
 
         JLabel jLabel = new JLabel("查询成绩",JLabel.CENTER);
-        jLabel.setBounds(0,90,120,20);
+        jLabel.setBounds(0,90,105,20);
         left.add(jLabel);
 
         ImageIcon imageIcon1 = new ImageIcon("src\\main\\resources\\工单管理.png");
         imageIcon1.setImage(imageIcon1.getImage().getScaledInstance(60,60,Image.SCALE_SMOOTH));
         final JLabel insert = new JLabel(imageIcon1);
-        insert.setBounds(30,175,60,60);
+        insert.setBounds(23,175,60,60);
         left.add(insert);
 
         addClickListener(insert,tab2);
         JLabel jLabe2 = new JLabel("录入成绩",JLabel.CENTER);
-        jLabe2.setBounds(30,240,60,20);
+        jLabe2.setBounds(23,240,60,20);
         left.add(jLabe2);
 
         ImageIcon imageIcon2 = new ImageIcon("src\\main\\resources\\检测管理.png");
         imageIcon2.setImage(imageIcon2.getImage().getScaledInstance(60,60,Image.SCALE_AREA_AVERAGING));
 
         final JLabel controller = new JLabel(imageIcon2);
-        controller.setBounds(30,325,60,60);
+        controller.setBounds(23,325,60,60);
         left.add(controller);
         addClickListener(controller,tab3);
 
         JLabel jLabe3 = new JLabel("修改成绩",JLabel.CENTER);
-        jLabe3.setBounds(30,390,60,20);
+        jLabe3.setBounds(23,390,60,20);
         left.add(jLabe3);
 
         ImageIcon imageIcon3 = new ImageIcon("src\\main\\resources\\任务监控001.png");
@@ -379,13 +379,13 @@ public class CourseView extends BaseView implements ICourseView {
 
         final JLabel update = new JLabel(imageIcon3);
         update.setText("统计成绩");
-        update.setBounds(30,465,60,60);
+        update.setBounds(23,465,60,60);
         left.add(update);
 
         addClickListener(update,tab4);
 
         JLabel jLabe4 = new JLabel("统计成绩",JLabel.CENTER);
-        jLabe4.setBounds(30,530,60,20);
+        jLabe4.setBounds(23,530,60,20);
         left.add(jLabe4);
 
 
