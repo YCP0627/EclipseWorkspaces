@@ -204,9 +204,16 @@ public class SqlOperationImpl implements SqlOperation {
     }
 
     public Boolean insertClassInfo(Class c) {
-        String s=String.format("insert into class(class_id,class_name,class_hour,class_proprety,score,teacher)"+
-                "values(\"%s\",\"%s\",%d,%b,%f,\"%s\")",c.getClassId(),c.getName(),c.getClassHour(),c.getObligatory(),
-                c.getScore(),c.getTeacher());
+        int i;
+        if(c.getObligatory()==true){
+            i=1;
+        }
+        else{
+            i=0;
+        }
+        String s=String.format("insert into class(class_name,class_hour,class_proprety,score,teacher)"+
+                "values(\"%s\",%d,%d,%f,\"%s\")",c.getName(),c.getClassHour(),i, c.getScore(),
+                c.getTeacher());
         return execute(s);
     }
 
@@ -215,7 +222,7 @@ public class SqlOperationImpl implements SqlOperation {
         return execute(s);
     }
 
-    public Boolean modifyClassInfo(String id, String key, Object value) {
+    /*public Boolean modifyClassInfo(String id, String key, Object value) {
         String s=null;
         if(value instanceof String){
             s=String.format("update class set %s=\"%s\" where class_id=\"%s\"",key,(String)value,id);
@@ -227,10 +234,27 @@ public class SqlOperationImpl implements SqlOperation {
             s=String.format("update class set %s=%f where class_id=\"%s\"",key,(Float)value,id);
         }
         return execute(s);
+    }*/
+    public Boolean modifyClassInfo(String id,String key,String value){
+        String s = null;
+        String s1 = "class_proprety";
+        String s2 = "score";
+        String s3 = "class_hour";
+        if(value.equals(s1)||value.equals(s3)){
+            s = String.format("update class set %s=%d where class_id=\"%s\"",key,Integer.valueOf(value),id);
+        }
+        else if(value.equals(s2)){
+            s = String.format("update class set %s=%f where class_id=\"%s\"",key,Float.valueOf(value),id);
+        }
+        else{
+            s = String.format("update class set %s=\"%s\" where class_id=\"%s\"",key,value,id);
+            System.out.println(s);
+        }
+       return execute(s);
     }
 
-    public Class getClassInfoById(String class_id) {
-        String s = String.format("select * from class where class_name = \"%s\"",class_id);
+    public Class getClassInfoById(String name) {
+        String s = String.format("select * from class where class_name = \"%s\"",name);
         try{
             PreparedStatement pre = connection.prepareStatement(s);
             ResultSet result = pre.executeQuery();
@@ -251,7 +275,7 @@ public class SqlOperationImpl implements SqlOperation {
     }
 
 
-    public boolean updateAdmin(String phone, String key, Object value) {
+    public Boolean updateAdmin(String phone, String key, Object value) {
         String s;
         if (value instanceof String){
             s = String.format("update admin set %s = \"%s\" where phone = \"%s\"",key,value,phone);
@@ -312,54 +336,6 @@ public class SqlOperationImpl implements SqlOperation {
         return null;
     }
 
-    @Override
-    public Grade getMaxGrade() {
-        String s = "select * from grade where class_grade=(select max(class_grade) from grade)";
-        try{
-            PreparedStatement pre = connection.prepareStatement(s);
-            ResultSet result = pre.executeQuery();
-            if (result.next()){
-                Grade grade = new Grade();
-                grade.setStuName(result.getString("name"));
-                grade.setId(result.getString("id"));
-                grade.setClassId(result.getString("class_id"));
-                grade.setClassName(result.getString("class_name"));
-                grade.setGradeId(result.getInt("grade_id"));
-                grade.setGrade(result.getInt("class_grade"));
-                result.close();
-                return grade;
-            }
-        } catch(SQLException e){
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @Override
-    public List<Grade> getAllGrade(String s1) {
-        List<Grade> gradeList = new ArrayList<Grade>();
-        String s= String.format("select * from grade where class_name=\"%s\"",s1);
-        try{
-            PreparedStatement pre = connection.prepareStatement(s);
-            ResultSet result = pre.executeQuery();
-            while (result.next()){
-                Grade grade = new Grade();
-                grade.setId(result.getString("id"));
-                grade.setStuName(result.getString("name"));
-                grade.setGradeId(result.getInt("grade_id"));
-                grade.setClassId(result.getString("class_id"));
-                grade.setClassName(result.getString("class_name"));
-                grade.setGrade(result.getInt("class_grade"));
-                gradeList.add(grade);
-            }
-            result.close();
-            return gradeList;
-        } catch(SQLException e){
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     public Adminstrator getAdmin(String phone) {
         String s= String.format("select * from admin where phone=\"%s\"",phone);
         try{
@@ -392,6 +368,18 @@ public class SqlOperationImpl implements SqlOperation {
             return false;
         }
     }
+
+    public  void modifyGradeName(String id,String stuName) throws SQLException {
+        String s = String.format("update grade set name = \"%s\" where id = \"%s\"",stuName,id);
+        statement.execute(s);
+    }
+
+    public Boolean delAdmi(String phone){
+        String s = String.format("delete admin where phone=\"%s\"",phone);
+        return  execute(s);
+    }
+
+
 
 
 }

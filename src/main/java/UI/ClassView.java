@@ -290,7 +290,7 @@ public class ClassView extends BaseView {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                String id = String.valueOf(jTextFieldMod.getText());
+                String id = String.valueOf(jLabelMod.getText());
                 String key = String.valueOf(jComboBoxMod.getSelectedItem());
                 String value =String.valueOf(jTextFieldMod1.getText());
                 Boolean result = classPresent.modi(id,key,value);

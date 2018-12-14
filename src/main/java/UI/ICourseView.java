@@ -1,9 +1,7 @@
 package UI;
 
 import Model.Class;
-import Model.ClassInfo;
 import Model.Grade;
-import Model.Student;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
@@ -18,8 +16,4 @@ public interface ICourseView {
     void delCourseResult(Boolean delGrade);
 
     void insertResult(boolean b, String s);
-
-    void resultOfGrade(boolean b, Student student,String grade);
-
-    void resultOfClassInfo(ClassInfo classInfo);
 }

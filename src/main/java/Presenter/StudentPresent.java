@@ -5,6 +5,8 @@ import UI.StudentView;
 import dao.SqlOperation;
 import dao.SqlOperationImpl;
 
+import java.sql.SQLException;
+
 public class StudentPresent {
     private StudentView studentView;
 
@@ -24,12 +26,13 @@ public class StudentPresent {
         return result;
     }
 
-    public  boolean mod(String s1,String s2,String value){
+    public  boolean mod(String s1,String s2,String value) throws SQLException {
         Boolean result;
         SqlOperation operation = SqlOperationImpl.getInstance();
         switch (s2){
             case "姓名":
                 result = operation.modifyStudentInfo1(s1,"name",value);
+                operation.modifyGradeName(s1,value);
                 break;
             case "性别":
                 result = operation.modifyStudentInfo1(s1,"sex",value);
