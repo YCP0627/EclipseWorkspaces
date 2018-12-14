@@ -1,6 +1,7 @@
 package UI;
 
 import Model.Class;
+import Model.ClassInfo;
 import Model.Grade;
 import Model.Student;
 import Presenter.CoursePresenter;
@@ -28,6 +29,8 @@ public class CourseView extends BaseView implements ICourseView {
     private DefaultTableModel tableModel;
     private DefaultTableModel tableMode2;
     private DefaultTableModel tableMode3;
+    private DefaultTableModel tableMode4;
+    private DefaultTableModel tableMode5;
     private String[] className;
     private JPanel tab1 = new JPanel();
     private JPanel tab2 = new JPanel();
@@ -74,10 +77,77 @@ public class CourseView extends BaseView implements ICourseView {
     }
 
     private void tab4RightUIInit() {
-        JComboBox<String> classTitles = new JComboBox<String>(className);
+        final String[] newClassName = className.clone();
+        newClassName[0] = "课程";
+        JLabel jLabel = new JLabel("查找最高分的学生信息",JLabel.CENTER);
+        jLabel.setBounds(0,35,700,30);
+        tab4.add(jLabel);
+
+        final JComboBox<String> classTitles = new JComboBox<String>(newClassName);
         classTitles.setBackground(Color.WHITE);
-        classTitles.setBounds(50,50,80,30);
+        classTitles.setBounds(240,70,80,30);
         tab4.add(classTitles);
+        JButton jButton = new JButton("查找");
+        jButton.setBackground(Color.WHITE);
+        jButton.setBounds(360,70,80,30);
+        tab4.add(jButton);
+        jButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (classTitles.getSelectedIndex()!=0){
+                    presenter.getMaxStudentInfo(newClassName[classTitles.getSelectedIndex()]);
+                }
+            }
+        });
+
+        String[] titles1 = {"学号","姓名","班级","性别","专业","分数"};
+        tableMode4 = new DefaultTableModel(titles1,1);
+        JTable jTable = new JTable(tableMode4){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        jTable.setDefaultRenderer(Object.class,cellRenderer);
+        JScrollPane scrollpane=new JScrollPane(jTable);
+        scrollpane.setBounds(50,120,610,39);
+        tab4.add(scrollpane);
+
+        JLabel jLabe2 = new JLabel("课程成绩信息统计",JLabel.CENTER);
+        jLabe2.setBounds(0,220,700,30);
+        tab4.add(jLabe2);
+
+        final JComboBox<String> classTitles1 = new JComboBox<String>(newClassName);
+        classTitles1.setBackground(Color.WHITE);
+        classTitles1.setBounds(240,255,80,30);
+        tab4.add(classTitles1);
+
+        JButton jButton1 = new JButton("统计");
+        jButton1.setBackground(Color.WHITE);
+        jButton1.setBounds(360,255,80,30);
+        tab4.add(jButton1);
+        jButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (classTitles1.getSelectedIndex()!=0){
+                    presenter.getClassInfo(newClassName[classTitles1.getSelectedIndex()]);
+                }
+            }
+        });
+
+        String[] titles2 = {"课程名称","任课老师","考试人数","及格人数","及格率","最高分","最低分","平均分"};
+        tableMode5 = new DefaultTableModel(titles2,1);
+        JTable jTable2 = new JTable(tableMode5){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        jTable2.setDefaultRenderer(Object.class,cellRenderer);
+        JScrollPane scrollpane1=new JScrollPane(jTable2);
+        scrollpane1.setBounds(50,305,610,39);
+        tab4.add(scrollpane1);
+
     }
 
     private void tab3RightUIInit() {
@@ -475,6 +545,44 @@ public class CourseView extends BaseView implements ICourseView {
             JOptionPane.showMessageDialog(jFrame,s,"提示",JOptionPane.INFORMATION_MESSAGE);
         }else {
             JOptionPane.showMessageDialog(jFrame,s,"提示",JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    @Override
+    public void resultOfGrade(boolean b, Student student,String grade) {
+        //String[] titles1 = {"学号","姓名","班级","性别","专业","分数"};
+        tableMode4.setRowCount(0);
+        if (b){
+            Vector<String> data = new Vector<>();
+            data.add(student.getId());
+            data.add(student.getName());
+            data.add(student.getClassName());
+            data.add(student.getSex());
+            data.add(student.getMajor());
+            data.add(grade);
+            tableMode4.addRow(data);
+        }else {
+            JOptionPane.showMessageDialog(jFrame,"还没有该门成绩的信息","提示",JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    @Override
+    public void resultOfClassInfo(ClassInfo classInfo) {
+        tableMode5.setRowCount(0);
+        //String[] titles2 = {"课程名称","任课老师","考试人数","及格人数","及格率","最高分","最低分","平均分"};
+        if (classInfo != null){
+            Vector<String> data = new Vector<>();
+            data.add(classInfo.getName());
+            data.add(classInfo.getTeacher());
+            data.add(String.valueOf(classInfo.getTotalMember()));
+            data.add(String.valueOf(classInfo.getPassMember()));
+            data.add(String.valueOf(classInfo.getPassRate()));
+            data.add(String.valueOf(classInfo.getMaxGrade()));
+            data.add(String.valueOf(classInfo.getMinGrade()));
+            data.add(String.valueOf(classInfo.getAverageGrade()));
+            tableMode5.addRow(data);
+        }else {
+            JOptionPane.showMessageDialog(jFrame,"出现未知错误","提示",JOptionPane.WARNING_MESSAGE);
         }
     }
 }
