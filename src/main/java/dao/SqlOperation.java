@@ -36,7 +36,7 @@ public interface SqlOperation {
     List<Class> getAllClass();
 
     Grade getGradeByClassAndId(String id, String selectClass);
-    Grade getMaxGrade();
+    List<Grade> getMaxGrade(String s);
 
     List<Grade> getAllGrade(String s);
 }

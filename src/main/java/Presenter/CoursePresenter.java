@@ -10,6 +10,7 @@ import dao.SqlOperation;
 import dao.SqlOperationImpl;
 
 import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -114,7 +115,7 @@ public class CoursePresenter {
         //String[] titles2 = {"课程名称","任课老师","考试人数","及格人数","及格率","最高分","最低分","平均分"};
         int passMember = 0;
         float max = 0;
-        float min = 200;
+        float min = 0;
         float total = 0;
         ClassInfo classInfo = new ClassInfo();
         Class c = sqlOperation.getClassInfoById(s);
@@ -122,7 +123,11 @@ public class CoursePresenter {
         classInfo.setTeacher(c.getTeacher());
         List<Grade> gradeList = sqlOperation.getAllGrade(s);
         classInfo.setTotalMember(gradeList.size());
+        int i =0;
         for (Grade grade : gradeList){
+            if (i == 0){
+                min = grade.getGrade();
+            }
             if (grade.getGrade()>60){
                 passMember ++;
             }
@@ -133,22 +138,39 @@ public class CoursePresenter {
                 min = grade.getGrade();
             }
             total += grade.getGrade();
+            i++;
         }
 
         classInfo.setPassMember(passMember);
-        classInfo.setPassRate(passMember/gradeList.size());
+        if(gradeList.size() == 0){
+            classInfo.setPassRate(0);
+        }else {
+            classInfo.setPassRate(Float.valueOf(passMember)/gradeList.size());
+        }
         classInfo.setMaxGrade(max);
         classInfo.setMinGrade(min);
-        classInfo.setAverageGrade(total/gradeList.size());
+        if(gradeList.size() == 0){
+            classInfo.setAverageGrade(0);
+        }else {
+            classInfo.setAverageGrade(total/gradeList.size());
+        }
         courseView.resultOfClassInfo(classInfo);
 
     }
 
     public void getMaxStudentInfo(String s) {
-        Grade grade = sqlOperation.getMaxGrade();
-        if (grade!=null){
-            Student student = sqlOperation.getStudentInfoById(grade.getId());
-            courseView.resultOfGrade(true,student,String.valueOf(grade.getGrade()));
+        List<Grade> gradeList = sqlOperation.getMaxGrade(s);
+        List<Student> studentList = new ArrayList<>();
+        if (!gradeList.isEmpty()){
+            String[] grades = new String[gradeList.size()];
+            int i=0;
+            for (Grade grade:gradeList){
+                Student student = sqlOperation.getStudentInfoById(grade.getId());
+                studentList.add(student);
+                grades[i] = String.valueOf(grade.getGrade());
+                i++;
+            }
+            courseView.resultOfGrade(true,studentList,grades);
         }else {
             courseView.resultOfGrade(false,null,null);
         }

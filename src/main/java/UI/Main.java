@@ -6,6 +6,8 @@ import Model.Student;
 import dao.SqlOperation;
 import dao.SqlOperationImpl;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.List;
 
 /**说明
@@ -20,8 +22,13 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-       StartView startView = new StartView();
-       startView.show();
+        Font f = new Font("微软雅黑",Font.BOLD,14);
+        UIManager.put("Label.font",f);
+        UIManager.put("Button.font",f);
+        UIManager.put("ComboBox.font",f);
+        StartView startView = new StartView();
+        startView.show();
+
 //        CourseView courseView = new CourseView();
 //        courseView.show();
     }

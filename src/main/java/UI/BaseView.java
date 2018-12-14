@@ -12,6 +12,7 @@ public abstract class BaseView {
 
     protected void onCreateView(){
         jFrame = new JFrame();
+        jFrame.setIconImage(new ImageIcon("src\\main\\resources\\icon.jpg").getImage());
         jFrame.setSize(800,600);
         jFrame.setLocationRelativeTo(null);
         jFrame.setLayout(null);

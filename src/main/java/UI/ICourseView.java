@@ -19,7 +19,7 @@ public interface ICourseView {
 
     void insertResult(boolean b, String s);
 
-    void resultOfGrade(boolean b, Student student,String grade);
+    void resultOfGrade(boolean b, List<Student> studentList,String[] grade);
 
     void resultOfClassInfo(ClassInfo classInfo);
 }

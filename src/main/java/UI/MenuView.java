@@ -41,13 +41,13 @@ public class MenuView extends BaseView {
         System.out.println(LoginInfo.getInstance().getLoginStyle());
         JLabel jLabel6 = new JLabel("功能宝箱");
         jLabel6.setBounds(350,50,300,40);
-        jLabel6.setFont(new Font("宋体",Font.BOLD, 20));
+        jLabel6.setFont(new Font("微软雅黑",Font.BOLD, 20));
         jFrame.getContentPane().add(jLabel6);
 
 
         JLabel jLabel7 = new JLabel("更多功能，带给您更贴心的理念");
         jLabel7.setBounds(330,90,300,20);
-        jLabel7.setFont(new Font("宋体",Font.PLAIN, 10));
+        jLabel7.setFont(new Font("微软雅黑",Font.PLAIN, 12));
         jFrame.getContentPane().add(jLabel7);
 
         ImageIcon img1 = new ImageIcon("src\\main\\resources\\icon_学生.png");
