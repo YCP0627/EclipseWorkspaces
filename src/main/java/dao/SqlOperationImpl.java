@@ -313,12 +313,14 @@ public class SqlOperationImpl implements SqlOperation {
     }
 
     @Override
-    public Grade getMaxGrade() {
-        String s = "select * from grade where class_grade=(select max(class_grade) from grade)";
+    public List<Grade> getMaxGrade(String s1) {
+        List<Grade> gradeList = new ArrayList<>();
+        String s = String.format("select * from grade where class_name = \"%s\" and class_grade=(select max(class_grade) " +
+                "from grade where class_name = \"%s\")",s1,s1);
         try{
             PreparedStatement pre = connection.prepareStatement(s);
             ResultSet result = pre.executeQuery();
-            if (result.next()){
+            while(result.next()){
                 Grade grade = new Grade();
                 grade.setStuName(result.getString("name"));
                 grade.setId(result.getString("id"));
@@ -326,9 +328,10 @@ public class SqlOperationImpl implements SqlOperation {
                 grade.setClassName(result.getString("class_name"));
                 grade.setGradeId(result.getInt("grade_id"));
                 grade.setGrade(result.getInt("class_grade"));
-                result.close();
-                return grade;
+                gradeList.add(grade);
             }
+            result.close();
+            return gradeList;
         } catch(SQLException e){
             e.printStackTrace();
         }

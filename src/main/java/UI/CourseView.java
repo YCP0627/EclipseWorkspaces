@@ -110,7 +110,7 @@ public class CourseView extends BaseView implements ICourseView {
         };
         jTable.setDefaultRenderer(Object.class,cellRenderer);
         JScrollPane scrollpane=new JScrollPane(jTable);
-        scrollpane.setBounds(50,120,610,39);
+        scrollpane.setBounds(50,120,610,80);
         tab4.add(scrollpane);
 
         JLabel jLabe2 = new JLabel("课程成绩信息统计",JLabel.CENTER);
@@ -549,18 +549,22 @@ public class CourseView extends BaseView implements ICourseView {
     }
 
     @Override
-    public void resultOfGrade(boolean b, Student student,String grade) {
+    public void resultOfGrade(boolean b, List<Student> studentList,String[] grades) {
         //String[] titles1 = {"学号","姓名","班级","性别","专业","分数"};
         tableMode4.setRowCount(0);
         if (b){
-            Vector<String> data = new Vector<>();
-            data.add(student.getId());
-            data.add(student.getName());
-            data.add(student.getClassName());
-            data.add(student.getSex());
-            data.add(student.getMajor());
-            data.add(grade);
-            tableMode4.addRow(data);
+            int i=0;
+            for (Student student:studentList){
+                Vector<String> data = new Vector<>();
+                data.add(student.getId());
+                data.add(student.getName());
+                data.add(student.getClassName());
+                data.add(student.getSex());
+                data.add(student.getMajor());
+                data.add(grades[i]);
+                tableMode4.addRow(data);
+                i++;
+            }
         }else {
             JOptionPane.showMessageDialog(jFrame,"还没有该门成绩的信息","提示",JOptionPane.WARNING_MESSAGE);
         }
@@ -576,7 +580,7 @@ public class CourseView extends BaseView implements ICourseView {
             data.add(classInfo.getTeacher());
             data.add(String.valueOf(classInfo.getTotalMember()));
             data.add(String.valueOf(classInfo.getPassMember()));
-            data.add(String.valueOf(classInfo.getPassRate()));
+            data.add(String.valueOf(classInfo.getPassRate() * 100) + "%");
             data.add(String.valueOf(classInfo.getMaxGrade()));
             data.add(String.valueOf(classInfo.getMinGrade()));
             data.add(String.valueOf(classInfo.getAverageGrade()));
