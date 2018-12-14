@@ -1,13 +1,13 @@
 package Presenter;
 
 import Model.Class;
+import Model.ClassInfo;
 import Model.Grade;
 import Model.Student;
 import UI.ICourseView;
 import com.mysql.cj.util.StringUtils;
 import dao.SqlOperation;
 import dao.SqlOperationImpl;
-import io.reactivex.Observable;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
@@ -108,5 +108,49 @@ public class CoursePresenter {
         Student student = sqlOperation.getStudentInfoById(grade.getId());
         grade.setBanji(student.getClassName());
         courseView.getGradeByNameAndClass(model,grade);
+    }
+
+    public void getClassInfo(String s) {
+        //String[] titles2 = {"课程名称","任课老师","考试人数","及格人数","及格率","最高分","最低分","平均分"};
+        int passMember = 0;
+        float max = 0;
+        float min = 200;
+        float total = 0;
+        ClassInfo classInfo = new ClassInfo();
+        Class c = sqlOperation.getClassInfoById(s);
+        classInfo.setName(s);
+        classInfo.setTeacher(c.getTeacher());
+        List<Grade> gradeList = sqlOperation.getAllGrade(s);
+        classInfo.setTotalMember(gradeList.size());
+        for (Grade grade : gradeList){
+            if (grade.getGrade()>60){
+                passMember ++;
+            }
+            if (grade.getGrade()>max){
+                max = grade.getGrade();
+            }
+            if (grade.getGrade()<min){
+                min = grade.getGrade();
+            }
+            total += grade.getGrade();
+        }
+
+        classInfo.setPassMember(passMember);
+        classInfo.setPassRate(passMember/gradeList.size());
+        classInfo.setMaxGrade(max);
+        classInfo.setMinGrade(min);
+        classInfo.setAverageGrade(total/gradeList.size());
+        courseView.resultOfClassInfo(classInfo);
+
+    }
+
+    public void getMaxStudentInfo(String s) {
+        Grade grade = sqlOperation.getMaxGrade();
+        if (grade!=null){
+            Student student = sqlOperation.getStudentInfoById(grade.getId());
+            courseView.resultOfGrade(true,student,String.valueOf(grade.getGrade()));
+        }else {
+            courseView.resultOfGrade(false,null,null);
+        }
     }
 }

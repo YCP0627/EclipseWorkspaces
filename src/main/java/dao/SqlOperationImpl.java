@@ -230,7 +230,7 @@ public class SqlOperationImpl implements SqlOperation {
     }
 
     public Class getClassInfoById(String class_id) {
-        String s = String.format("select * from class where name = \"%s\"",class_id);
+        String s = String.format("select * from class where class_name = \"%s\"",class_id);
         try{
             PreparedStatement pre = connection.prepareStatement(s);
             ResultSet result = pre.executeQuery();
@@ -306,6 +306,54 @@ public class SqlOperationImpl implements SqlOperation {
                 result.close();
                 return grade;
             }
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Grade getMaxGrade() {
+        String s = "select * from grade where class_grade=(select max(class_grade) from grade)";
+        try{
+            PreparedStatement pre = connection.prepareStatement(s);
+            ResultSet result = pre.executeQuery();
+            if (result.next()){
+                Grade grade = new Grade();
+                grade.setStuName(result.getString("name"));
+                grade.setId(result.getString("id"));
+                grade.setClassId(result.getString("class_id"));
+                grade.setClassName(result.getString("class_name"));
+                grade.setGradeId(result.getInt("grade_id"));
+                grade.setGrade(result.getInt("class_grade"));
+                result.close();
+                return grade;
+            }
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public List<Grade> getAllGrade(String s1) {
+        List<Grade> gradeList = new ArrayList<Grade>();
+        String s= String.format("select * from grade where class_name=\"%s\"",s1);
+        try{
+            PreparedStatement pre = connection.prepareStatement(s);
+            ResultSet result = pre.executeQuery();
+            while (result.next()){
+                Grade grade = new Grade();
+                grade.setId(result.getString("id"));
+                grade.setStuName(result.getString("name"));
+                grade.setGradeId(result.getInt("grade_id"));
+                grade.setClassId(result.getString("class_id"));
+                grade.setClassName(result.getString("class_name"));
+                grade.setGrade(result.getInt("class_grade"));
+                gradeList.add(grade);
+            }
+            result.close();
+            return gradeList;
         } catch(SQLException e){
             e.printStackTrace();
         }
