@@ -204,9 +204,16 @@ public class SqlOperationImpl implements SqlOperation {
     }
 
     public Boolean insertClassInfo(Class c) {
-        String s=String.format("insert into class(class_id,class_name,class_hour,class_proprety,score,teacher)"+
-                "values(\"%s\",\"%s\",%d,%b,%f,\"%s\")",c.getClassId(),c.getName(),c.getClassHour(),c.getObligatory(),
-                c.getScore(),c.getTeacher());
+        int i;
+        if(c.getObligatory()==true){
+            i=1;
+        }
+        else{
+            i=0;
+        }
+        String s=String.format("insert into class(class_name,class_hour,class_proprety,score,teacher)"+
+                "values(\"%s\",%d,%d,%f,\"%s\")",c.getName(),c.getClassHour(),i, c.getScore(),
+                c.getTeacher());
         return execute(s);
     }
 
@@ -215,7 +222,7 @@ public class SqlOperationImpl implements SqlOperation {
         return execute(s);
     }
 
-    public Boolean modifyClassInfo(String id, String key, Object value) {
+    /*public Boolean modifyClassInfo(String id, String key, Object value) {
         String s=null;
         if(value instanceof String){
             s=String.format("update class set %s=\"%s\" where class_id=\"%s\"",key,(String)value,id);
@@ -227,10 +234,27 @@ public class SqlOperationImpl implements SqlOperation {
             s=String.format("update class set %s=%f where class_id=\"%s\"",key,(Float)value,id);
         }
         return execute(s);
+    }*/
+    public Boolean modifyClassInfo(String id,String key,String value){
+        String s = null;
+        String s1 = "class_proprety";
+        String s2 = "score";
+        String s3 = "class_hour";
+        if(value.equals(s1)||value.equals(s3)){
+            s = String.format("update class set %s=%d where class_id=\"%s\"",key,Integer.valueOf(value),id);
+        }
+        else if(value.equals(s2)){
+            s = String.format("update class set %s=%f where class_id=\"%s\"",key,Float.valueOf(value),id);
+        }
+        else{
+            s = String.format("update class set %s=\"%s\" where class_id=\"%s\"",key,value,id);
+            System.out.println(s);
+        }
+       return execute(s);
     }
 
-    public Class getClassInfoById(String class_id) {
-        String s = String.format("select * from class where name = \"%s\"",class_id);
+    public Class getClassInfoById(String name) {
+        String s = String.format("select * from class where class_name = \"%s\"",name);
         try{
             PreparedStatement pre = connection.prepareStatement(s);
             ResultSet result = pre.executeQuery();

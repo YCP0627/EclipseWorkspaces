@@ -7,7 +7,6 @@ import UI.ICourseView;
 import com.mysql.cj.util.StringUtils;
 import dao.SqlOperation;
 import dao.SqlOperationImpl;
-import io.reactivex.Observable;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.List;

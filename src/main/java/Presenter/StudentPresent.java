@@ -8,7 +8,7 @@ import dao.SqlOperationImpl;
 public class StudentPresent {
     private StudentView studentView;
 
-    public void setStudentView(StudentView studentView) {
+    public  StudentPresent(StudentView studentView) {
         this.studentView = studentView;
     }
 

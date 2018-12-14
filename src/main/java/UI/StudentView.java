@@ -13,7 +13,7 @@ public class StudentView extends BaseView {
 
 
     TabController tabController = new TabController();
-    StudentPresent studentPresent = new StudentPresent();
+    StudentPresent studentPresent = new StudentPresent(this);
 
 
     public void returnMain()
