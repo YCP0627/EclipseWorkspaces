@@ -27,11 +27,15 @@ public interface SqlOperation {
 
     Boolean insertClassInfo(Class c);
     Boolean delClassInfo(String classId);
-    Boolean modifyClassInfo(String id,String key,Object value);
-    Class getClassInfoById(String class_id);
+    Boolean modifyClassInfo(String id,String key,String  value);
+    Class getClassInfoById(String name);
+
+    void modifyGradeName(String id,String studentName) throws SQLException;
 
     Adminstrator getAdmin(String phone);
-    boolean updateAdmin(String phone,String key, Object value);
+    Boolean updateAdmin(String phone,String key, Object value);
+    Boolean delAdmi(String phone);
+
 
     List<Class> getAllClass();
 

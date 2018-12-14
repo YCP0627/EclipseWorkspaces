@@ -8,12 +8,13 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.SQLException;
 
 public class StudentView extends BaseView {
 
 
     TabController tabController = new TabController();
-    StudentPresent studentPresent = new StudentPresent();
+    StudentPresent studentPresent = new StudentPresent(this);
 
 
     public void returnMain()
@@ -338,7 +339,12 @@ public class StudentView extends BaseView {
                 String studentId = String.valueOf(jTextFieldMod.getText());
                 String studentPro= String.valueOf(jComboBoxMod.getSelectedItem());
                 String studentValue = String.valueOf(jTextFieldMod1.getText());
-                Boolean result = studentPresent.mod(studentId,studentPro,studentValue);
+                Boolean result = null;
+                try {
+                    result = studentPresent.mod(studentId,studentPro,studentValue);
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
                 if(result!=false)
                 {
                     JOptionPane.showMessageDialog(jFrame,"修改成功","提示",JOptionPane.WARNING_MESSAGE);

@@ -153,6 +153,8 @@ public class MenuView extends BaseView {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
+                DelAdminView delAdminView = new DelAdminView();
+                startNewView(delAdminView);
             }
 
             @Override

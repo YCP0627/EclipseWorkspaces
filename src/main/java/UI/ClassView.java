@@ -1,75 +1,74 @@
 package UI;
 
+import Model.Class;
 import Presenter.ClassPresenter;
 import Utils.TabController;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class ClassView extends BaseView {
-    TabController tabController = new TabController();
-    ClassPresenter classPresent = new ClassPresenter();
+   TabController tabController = new TabController();
+    ClassPresenter classPresent = new ClassPresenter(this);
+    StudentView student = new StudentView();//方便调用页面跳转的那个监听事件
     @Override
     protected void onCreate() {
         super.onCreate();
         returnMain();
-        searchJpanel();
-    }
-
-    private void searchJpanel(){
-        //主界面/查询界面
+        //左边导航
         ImageIcon img1 = new ImageIcon("src\\main\\resources\\查找书本.png");
         img1.setImage(img1.getImage().getScaledInstance(60,60, Image.SCALE_SMOOTH));
         final JLabel jLabel = new JLabel("查找课程信息",img1,JLabel.HORIZONTAL);
         jLabel.setHorizontalTextPosition(JLabel.CENTER);
         jLabel.setVerticalTextPosition(JLabel.BOTTOM);
-        //jLabel.setBounds(50,200,100,100);
-        jLabel.setSize(100,120);
+        jLabel.setSize(120,120);
         jLabel.setBackground(Color.black);
-        //jFrame.getContentPane().add(jLabel);
 
         ImageIcon img2 = new ImageIcon("src\\main\\resources\\增加书本.png");
         img2.setImage(img2.getImage().getScaledInstance(60,60,Image.SCALE_SMOOTH));
         final JLabel jLabel1 = new JLabel("添加课程信息",img2,JLabel.HORIZONTAL);
         jLabel1.setHorizontalTextPosition(JLabel.CENTER);
         jLabel1.setVerticalTextPosition(JLabel.BOTTOM);
-        jLabel1.setSize(100,120);
-        //jLabel1.setBounds(200,200,100,100);
-        //Frame.getContentPane().add(jLabel1);
+        jLabel1.setSize(120,120);
 
         ImageIcon img3 = new ImageIcon("src\\main\\resources\\删除书本.png");
         img3.setImage(img3.getImage().getScaledInstance(60,60,Image.SCALE_SMOOTH));
         final JLabel jLabel2 = new JLabel("删除课程信息",img3,JLabel.HORIZONTAL);
         jLabel2.setHorizontalTextPosition(JLabel.CENTER);
         jLabel2.setVerticalTextPosition(JLabel.BOTTOM);
-        jLabel2.setSize(100,120);
-        //jLabel2.setBounds(350,200,100,100);
-        //jFrame.getContentPane().add(jLabel2);
+        jLabel2.setSize(120,120);
 
         ImageIcon img4 = new ImageIcon("src\\main\\resources\\修改书本.png");
         img4.setImage(img4.getImage().getScaledInstance(60,60,Image.SCALE_SMOOTH));
         final JLabel jLabel3 = new JLabel("修改课程信息",img4,JLabel.HORIZONTAL);
         jLabel3.setHorizontalTextPosition(JLabel.CENTER);
         jLabel3.setVerticalTextPosition(JLabel.BOTTOM);
-        jLabel3.setSize(100,120);
-        //jLabel3.setBounds(500,200,100,100);
-        //jFrame.getContentPane().add(jLabel3);
+        jLabel3.setSize(120,120);
 
         final JPanel jPanel = new JPanel();
         jPanel.setLayout(new GridLayout(4,1));
-        jPanel.setSize(100,540);
+        jPanel.setSize(120,570);
         jPanel.add(jLabel);
         jPanel.add(jLabel1);
         jPanel.add(jLabel2);
         jPanel.add(jLabel3);
-
-        //jFrame.setLayout(new FlowLayout(FlowLayout.LEFT));
-        //jFrame.getContentPane().setBackground(Color.white);
         jFrame.getContentPane().add(jPanel);
+        //searchJpanel();
+        student.addMouseClick(jLabel,searchJpanel());
+        addJpanel();
+        student.addMouseClick(jLabel1,addJpanel());
+        delJpanel();
+        student.addMouseClick(jLabel2,delJpanel());
+        modiJpanel();
+        student.addMouseClick(jLabel3,modiJpanel());
+    }
 
+    private JPanel searchJpanel(){
         JLabel jLabel4 = new JLabel("课程名:");
         jLabel4.setBounds(50,30,60,30);
         final JTextField jTextField = new JTextField();
@@ -95,34 +94,60 @@ public class ClassView extends BaseView {
         jPanel1.setBackground(Color.white);
         jFrame.getContentPane().add(jPanel1);
         tabController.addPanel(jPanel1);
-
+        jButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                String s = String.valueOf(jTextField.getText());
+                Class lesson = classPresent.search(s);
+                if(lesson!=null)
+                {
+                    String classPro = null;
+                    if(lesson.getObligatory()==true)
+                    {
+                        classPro = "必修";
+                    }
+                    else{
+                        classPro = "选修";
+                    }
+                    String s1[] = {lesson.getClassId(),lesson.getName(),String.valueOf(lesson.getClassHour()),
+                            classPro,String.valueOf(lesson.getScore()),lesson.getTeacher()};
+                    model.setRowCount(0);
+                    model.addRow(s1);
+                }
+                else{
+                    JOptionPane.showMessageDialog(jFrame,"该课程不存在请重新输入","提示",JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        });
+        return jPanel1;
     }
 
-    private void addJpanel(){
+    private JPanel addJpanel(){
         final JPanel jPanelAdd = new JPanel();
         jPanelAdd.setLayout(null);
         jPanelAdd.setBounds(110,0,700,600);
         jPanelAdd.setBackground(Color.white);
 
-        JLabel jLabelAddId = new JLabel("学    号:");
+        JLabel jLabelAddId = new JLabel("  课程名:");
         jLabelAddId.setFont(new Font("宋体",Font.BOLD, 14));
         final JTextField jTextFieldAddId = new JTextField();
         jLabelAddId.setBounds(150,50,100,30);
         jTextFieldAddId.setBounds(250,50,270,30);
 
-        JLabel jLabelAddName = new JLabel("姓    名:");
+        JLabel jLabelAddName = new JLabel("    课时:");
         jLabelAddName.setFont(new Font("宋体",Font.BOLD, 14));
         final JTextField jTextFieldAddName = new JTextField();
         jLabelAddName.setBounds(150,100,100,30);
         jTextFieldAddName.setBounds(250,100,270,30);
 
-        JLabel jLabelAddSex = new JLabel("性    别:");
+        JLabel jLabelAddSex = new JLabel("课程性质:");
         jLabelAddSex.setFont(new Font("宋体",Font.BOLD, 14));
         //JTextField jTextFieldAddSex = new JTextField();
         jLabelAddSex.setBounds(150,150,100,30);
         //jTextFieldAddSex.setBounds(250,150,270,30);
-        final JRadioButton jRadioButtonB = new JRadioButton("男",true);
-        final JRadioButton jRadioButtonG = new JRadioButton("女");
+        final JRadioButton jRadioButtonB = new JRadioButton("必修",true);
+        final JRadioButton jRadioButtonG = new JRadioButton("选修");
         jRadioButtonB.setBackground(Color.white);
         jRadioButtonG.setBackground(Color.white);
         jRadioButtonB.setBounds(300,150,100,30);
@@ -132,34 +157,22 @@ public class ClassView extends BaseView {
         buttonGroup.add(jRadioButtonG);
 
 
-        JLabel jLabelAddAge = new JLabel("年    龄:");
+        JLabel jLabelAddAge = new JLabel("    学分:");
         jLabelAddAge.setFont(new Font("宋体",Font.BOLD, 14));
         final JTextField jTextFieldAddAge = new JTextField();
         jLabelAddAge.setBounds(150,200,100,30);
         jTextFieldAddAge.setBounds(250,200,270,30);
 
-        JLabel jLabelAddIdCard = new JLabel("身份证号:");
+        JLabel jLabelAddIdCard = new JLabel("任课老师:");
         jLabelAddIdCard.setFont(new Font("宋体",Font.BOLD, 14));
         final JTextField jTextFieldAddIdCard = new JTextField();
         jLabelAddIdCard.setBounds(150,250,100,30);
         jTextFieldAddIdCard.setBounds(250,250,270,30);
 
-        JLabel jLabelAddMajor = new JLabel("专    业:");
-        jLabelAddMajor.setFont(new Font("宋体",Font.BOLD, 14));
-        final JTextField jTextFieldAddMajor = new JTextField();
-        jLabelAddMajor.setBounds(150,300,100,30);
-        jTextFieldAddMajor.setBounds(250,300,270,30);
-
-        JLabel jLabelAddClassN = new JLabel("班    级:");
-        jLabelAddClassN.setFont(new Font("宋体",Font.BOLD, 14));
-        final JTextField jTextFieldAddClassN = new JTextField();
-        jLabelAddClassN.setBounds(150,350,100,30);
-        jTextFieldAddClassN.setBounds(250,350,270,30);
-
         JButton jButtonAdd = new JButton("添加");
         jButtonAdd.setFont(new Font("宋体",Font.BOLD,14));
         //jButtonAdd.setBackground(Color.blue);
-        jButtonAdd.setBounds(250,400,270,30);
+        jButtonAdd.setBounds(250,320,270,30);
 
         jPanelAdd.add(jLabelAddId);
         jPanelAdd.add(jTextFieldAddId);
@@ -172,23 +185,48 @@ public class ClassView extends BaseView {
         jPanelAdd.add(jTextFieldAddAge);
         jPanelAdd.add(jLabelAddIdCard);
         jPanelAdd.add(jTextFieldAddIdCard);
-        jPanelAdd.add(jLabelAddMajor);
-        jPanelAdd.add(jTextFieldAddMajor);
-        jPanelAdd.add(jLabelAddClassN);
-        jPanelAdd.add(jTextFieldAddClassN);
+
         jPanelAdd.add(jButtonAdd);
         tabController.addPanel(jPanelAdd);
         jFrame.getContentPane().add(jPanelAdd);
         jPanelAdd.setVisible(false);
 
+        jButtonAdd.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                Class lesson = new Class();
+                lesson.setName(String.valueOf(jTextFieldAddId.getText()));
+                lesson.setClassHour(Integer.valueOf(jTextFieldAddName.getText()));
+                Boolean classP;
+                if(jRadioButtonB.isSelected()){
+                    classP = true;
+                } else{
+                    classP = false;
+                }
+                lesson.setObligatory(classP);
+                lesson.setScore(Float.valueOf(jTextFieldAddAge.getText()));
+                lesson.setTeacher(String.valueOf(jTextFieldAddIdCard.getText()));
+                Boolean result = classPresent.add(lesson);
+                if(result!=false)
+                {
+                    JOptionPane.showMessageDialog(jFrame,"添加成功","提示",JOptionPane.WARNING_MESSAGE);
+                }
+                else{
+                    JOptionPane.showMessageDialog(jFrame,"您的信息输入有误，请重新输入","提示",JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        });
+        return  jPanelAdd;
+
     }
 
-    private void delJpanel(){
-        JLabel jLabelDel = new JLabel("学号:");
-        jLabelDel.setBounds(50,30,40,30);
+    private JPanel delJpanel(){
+        JLabel jLabelDel = new JLabel("课程号:");
+        jLabelDel.setBounds(50,30,60,30);
         final JTextField jTextFieldDel = new JTextField();
         JButton jButtonDel = new JButton("删除");
-        jTextFieldDel.setBounds(110,30,430,30);
+        jTextFieldDel.setBounds(130,30,410,30);
         jButtonDel.setBounds(560,30,80,30);
         jButtonDel.setBackground(Color.white);
         final JPanel jPanelDel = new JPanel();
@@ -202,21 +240,35 @@ public class ClassView extends BaseView {
         jFrame.getContentPane().add(jPanelDel);
         jPanelDel.setVisible(false);
 
+        jButtonDel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                String classId = String.valueOf(jTextFieldDel.getText());
+                Boolean result = classPresent.del(classId);
+                if (result != false) {
+                    JOptionPane.showMessageDialog(jFrame, "删除成功", "提示", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(jFrame, "您输入的课程号不存在，请重新输入", "提示", JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        });
+        return jPanelDel;
+
     }
 
-    private void modiJpanel(){
-        JLabel jLabelMod = new JLabel("学号");
+    private JPanel modiJpanel(){
+        final JLabel jLabelMod = new JLabel("课程号");
         jLabelMod.setBounds(50,30,40,30);
         final JTextField jTextFieldMod = new JTextField();
         jTextFieldMod.setBounds(110,30,150,30);
         final JComboBox jComboBoxMod = new JComboBox();
         jComboBoxMod.addItem("属性");
-        jComboBoxMod.addItem("姓名");
-        jComboBoxMod.addItem("性别");
-        jComboBoxMod.addItem("年龄");
-        jComboBoxMod.addItem("身份证号");
-        jComboBoxMod.addItem("专业");
-        jComboBoxMod.addItem("班级");
+        jComboBoxMod.addItem("课程名");
+        jComboBoxMod.addItem("课时");
+        jComboBoxMod.addItem("课程性质");
+        jComboBoxMod.addItem("学分");
+        jComboBoxMod.addItem("任课老师");
         jComboBoxMod.setBounds(270,30,80,30);
         final JTextField jTextFieldMod1 = new JTextField();
         jTextFieldMod1.setBounds(360,30,210,30);
@@ -234,6 +286,23 @@ public class ClassView extends BaseView {
         tabController.addPanel(jPanelMod);
         jFrame.getContentPane().add(jPanelMod);
         jPanelMod.setVisible(false);
+        jButtonMod.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                String id = String.valueOf(jLabelMod.getText());
+                String key = String.valueOf(jComboBoxMod.getSelectedItem());
+                String value =String.valueOf(jTextFieldMod1.getText());
+                Boolean result = classPresent.modi(id,key,value);
+                if (result != false) {
+                    JOptionPane.showMessageDialog(jFrame, "修改成功", "提示", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(jFrame, "您输入的信息有误，请重新输入", "提示", JOptionPane.WARNING_MESSAGE);
+                }
+
+            }
+        });
+        return jPanelMod;
     }
 
     public void returnMain()
@@ -255,5 +324,7 @@ public class ClassView extends BaseView {
             }
         });
     }
+
+
 
 }
