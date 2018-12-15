@@ -34,6 +34,7 @@ public class LoginView extends BaseView implements ILoginView {
         jLabel2.setFont(new Font("微软雅黑",Font.BOLD, 14));
         jLabel2.setBounds(65,250,60,30);
 
+
         final JTextField jTextField = new JTextField(11);
         jTextField.setBounds(120,190,215,30);
         final JPasswordField jPasswordField1 = new JPasswordField();
@@ -48,6 +49,29 @@ public class LoginView extends BaseView implements ILoginView {
         jFrame.getContentPane().add(jButton);
 
         initJframe();
+
+        jPasswordField1.setFocusable(true);
+
+        jPasswordField1.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyChar() == KeyEvent.VK_ENTER){
+                    String  user = jTextField.getText();
+                    String password = new String(jPasswordField1.getPassword());
+                    loginPresenter.login(user,password);
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
+            }
+        });
 
         ActionListener loginListenner = new ActionListener() {
             @Override
