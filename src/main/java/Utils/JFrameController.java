@@ -1,6 +1,9 @@
 package Utils;
 
+import dao.SqlOperationImpl;
+
 import javax.swing.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +22,16 @@ public class JFrameController {
         jFrame.dispose();
         jFrameList.remove(jFrame);
         top--;
+        if(top == -1){
+            try {
+                SqlOperationImpl.getInstance().close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }finally {
+                System.exit(0);
+            }
+
+        }
         jFrameList.get(top).setVisible(true);
     }
 

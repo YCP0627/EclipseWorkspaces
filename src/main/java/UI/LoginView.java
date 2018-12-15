@@ -53,11 +53,11 @@ public class LoginView extends BaseView implements ILoginView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(e.getActionCommand().equals("登录")){
-                    /*String user = jTextField.getText();
+                    String user = jTextField.getText();
                     String password = new String(jPasswordField1.getPassword());
-                    loginPresenter.login(user,password);*/
-                    MenuView menuView = new MenuView();
-                    startNewView(menuView);
+                    loginPresenter.login(user,password);
+//                    MenuView menuView = new MenuView();
+//                    startNewView(menuView);
                 }
             }
         };
@@ -82,7 +82,7 @@ public class LoginView extends BaseView implements ILoginView {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                System.exit(0);
+                onDestory();
             }
         });
 
@@ -136,12 +136,12 @@ public class LoginView extends BaseView implements ILoginView {
 
     }
 
-    public void loginResult(Boolean success) {
+    public void loginResult(Boolean success,String s) {
         if (success){
             MenuView menuView = new MenuView();
             startNewView(menuView);
         }else {
-            JOptionPane.showMessageDialog(jFrame,"账号不存在或者密码错误","提示",JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(jFrame,s,"提示",JOptionPane.WARNING_MESSAGE);
         }
     }
 }
