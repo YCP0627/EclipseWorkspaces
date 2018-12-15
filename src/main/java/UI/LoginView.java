@@ -53,23 +53,26 @@ public class LoginView extends BaseView implements ILoginView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(e.getActionCommand().equals("登录")){
-                    /*String user = jTextField.getText();
+                    String user = jTextField.getText();
                     String password = new String(jPasswordField1.getPassword());
-                    loginPresenter.login(user,password);*/
-                    MenuView menuView = new MenuView();
-                    startNewView(menuView);
+                    loginPresenter.login(user,password);
+                    /*MenuView menuView = new MenuView();
+                    startNewView(menuView);*/
                 }
             }
         };
         jButton.addActionListener(loginListenner);
     }
 
+    //这段代码
     private void initJframe() {
         Font f = new Font("微软雅黑",Font.BOLD,14);
+        //去掉边框
         jFrame.setUndecorated(true);
+        jFrame.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
+
         jFrame.getContentPane().setBackground(Color.WHITE);
         jFrame.setSize(400,380);
-        jFrame.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
         jFrame.setLocationRelativeTo(null);
 
         JLabel jLabel1 = new JLabel("X");
@@ -112,6 +115,7 @@ public class LoginView extends BaseView implements ILoginView {
         jLabel.setBounds(0,0,400,200);
         jFrame.getContentPane().add(jLabel);
 
+        //去掉边框后拖动不了了，要按下面写才能拖动
         jFrame.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {

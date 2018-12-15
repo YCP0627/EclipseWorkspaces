@@ -6,21 +6,43 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class DelAdminView extends BaseView {
     DelAdminPresenter delAdminPresenter = new DelAdminPresenter(this);
+    public void returnMain()
+    {
+        jFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        jFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                onDestory(); //写这个的话就是退回上一个界面。
+                //退出主界面用下面这个
+//                try {
+//                    SqlOperationImpl.getInstance().close();
+//                } catch (SQLException e1) {
+//                    e1.printStackTrace();
+//                }finally {
+//                    System.exit(0);
+//                }
+            }
+        });
+    }
 
     @Override
     protected void onCreate() {
         super.onCreate();
-        jFrame.setBackground(Color.white);
+        returnMain();
+        jFrame.getContentPane().setBackground(Color.white);
         //jFrame.setLayout(new GridLayout(1,3));
         ImageIcon img  = new ImageIcon("src\\main\\resources\\删除管理员 (1).png");
         img.setImage(img.getImage().getScaledInstance(100,100,Image.SCALE_SMOOTH));
         final JLabel jLabelPicture = new JLabel(img,JLabel.HORIZONTAL);
         JPanel jPanel = new JPanel();
         jPanel.setLayout(null);
-        //jPanel.setBackground(Color.white);
+        jPanel.setBackground(Color.white);
         jPanel.setBounds(0,0,800,200);
         jLabelPicture.setBounds(350,60,100,100);
         jPanel.add(jLabelPicture);

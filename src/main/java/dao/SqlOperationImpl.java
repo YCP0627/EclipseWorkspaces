@@ -430,6 +430,19 @@ public class SqlOperationImpl implements SqlOperation {
         return  execute(s);
     }
 
+    public Boolean addAdmi(Adminstrator adminstrator){
+        DateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String date = simpleDateFormat.format(adminstrator.getRegisterDate());
+        String date1 = simpleDateFormat.format(adminstrator.getLastDate());
+        String s1 = String.format("insert into admin(phone,password,name,style,register_date,last_login_date)"+
+                        "values(\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\")",adminstrator.getPhone(),adminstrator.getPassword(),
+                adminstrator.getName(),adminstrator.getStyle(),date,date1);
+        //System.out.println(s+"\n" + s1);
+        return execute(s1);
+
+
+    }
+
 
 
 

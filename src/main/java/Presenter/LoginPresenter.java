@@ -23,6 +23,7 @@ public class LoginPresenter {
                 Adminstrator adminstrator = operation.getAdmin(user);
                 if (adminstrator != null && adminstrator.getPassword().equals(password)){
                     LoginInfo loginInfo = LoginInfo.getInstance();
+                    //下面这一行是往reids数据库里面加数据
                     loginInfo.setAdminInRedis(adminstrator);
                     operation.updateAdmin(user,"login_count",adminstrator.getLoginCount()+1);
                     operation.updateAdmin(user,"last_login_date",new Date());

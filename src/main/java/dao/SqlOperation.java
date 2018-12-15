@@ -35,6 +35,7 @@ public interface SqlOperation {
     Adminstrator getAdmin(String phone);
     Boolean updateAdmin(String phone,String key, Object value);
     Boolean delAdmi(String phone);
+    Boolean addAdmi(Adminstrator adminstrator);
 
 
     List<Class> getAllClass();
