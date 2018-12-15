@@ -37,16 +37,19 @@ public class MenuView extends BaseView {
         closeCon();
         jFrame.setSize(800,500);
         jFrame.getContentPane().setBackground(Color.white);
+        //下面这两行就是输出用户的名字和用户的类型嗯嗯我试一下
+        final String adminStyle = LoginInfo.getInstance().getLoginStyle();
+        jFrame.setTitle(LoginInfo.getInstance().getLoginName() + ",您好");
         System.out.println(LoginInfo.getInstance().getLoginName());
         System.out.println(LoginInfo.getInstance().getLoginStyle());
-        JLabel jLabel6 = new JLabel("功能宝箱");
-        jLabel6.setBounds(350,50,300,40);
+        JLabel jLabel6 = new JLabel("功能宝箱",JLabel.CENTER);
+        jLabel6.setBounds(0,50,800,40);
         jLabel6.setFont(new Font("微软雅黑",Font.BOLD, 20));
         jFrame.getContentPane().add(jLabel6);
 
 
-        JLabel jLabel7 = new JLabel("更多功能，带给您更贴心的理念");
-        jLabel7.setBounds(330,90,300,20);
+        JLabel jLabel7 = new JLabel("更多功能，带给您更贴心的理念",JLabel.CENTER);
+        jLabel7.setBounds(0,90,800,20);
         jLabel7.setFont(new Font("微软雅黑",Font.PLAIN, 12));
         jFrame.getContentPane().add(jLabel7);
 
@@ -136,32 +139,49 @@ public class MenuView extends BaseView {
             }
         });
 
-        jLabel3.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-            }
 
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                super.mouseEntered(e);
-                jLabel3.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            }
-        });
 
-        jLabel4.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                DelAdminView delAdminView = new DelAdminView();
-                startNewView(delAdminView);
-            }
+            jLabel3.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e);
+                    if(adminStyle.equals("超级管理员")) {
+                        AddAdminView addAdminView = new AddAdminView();
+                        startNewView(addAdminView);
+                    } else
+                    {
+                        JOptionPane.showMessageDialog(jFrame,"你不是超级管理员，没有该权限","提示",JOptionPane.WARNING_MESSAGE);
+                    }
+                }
 
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                super.mouseEntered(e);
-                jLabel4.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            }
-        });
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    super.mouseEntered(e);
+                    jLabel3.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                }
+            });
+
+            jLabel4.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e);
+                    if(adminStyle.equals("超级管理员")) {
+                        DelAdminView delAdminView = new DelAdminView();
+                        startNewView(delAdminView);
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(jFrame,"你不是超级管理员，没有该权限","提示",JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    super.mouseEntered(e);
+                    jLabel4.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                }
+            });
+
+
+
     }
 }
