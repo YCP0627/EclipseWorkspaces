@@ -69,11 +69,11 @@ public class StartView extends BaseView {
         SqlOperationImpl.getInstance();
         jLabel2.setText("正在连接Redis");
         jLabel2.updateUI();
-//        try {
-//            Thread.sleep(10000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         LoginInfo.getInstance();
         jLabel2.setText("资源初始化成功");
         jLabel2.updateUI();
