@@ -7,6 +7,8 @@ import redis.clients.jedis.Jedis;
 
 import javax.swing.*;
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import java.awt.*;
 import java.awt.event.*;
@@ -81,6 +83,7 @@ public class LoginView extends BaseView implements ILoginView {
             public void actionPerformed(ActionEvent e) {
                 if(e.getActionCommand().equals("登录")){
                     @Pattern(regexp ="^1(3|4|5|7|8)\\d{9}$",message = "账号格式错误，请重新输入")
+                    @NotEmpty
                     String user;
                     user = jTextField.getText();
                     ValidatorUtil.validate(jFrame,user);
