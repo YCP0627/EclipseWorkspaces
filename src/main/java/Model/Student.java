@@ -2,6 +2,7 @@ package Model;
 
 import Utils.IsIdCard;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -17,7 +18,9 @@ public class Student {
     private int age;
     @IsIdCard
     private String idCard;
+    @NotEmpty
     private String major;
+    @NotBlank
     private String className;
 
     public String getClassName() {

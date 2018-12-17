@@ -1,11 +1,15 @@
 package Model;
 
+import javax.validation.constraints.NotEmpty;
+
 public class Class {
     private String classId;
+    @NotEmpty
     private String name;
     private int classHour;
     private Boolean isObligatory;
     private float score;
+    @NotEmpty
     private String teacher;
 
 

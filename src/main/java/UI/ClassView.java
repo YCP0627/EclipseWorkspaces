@@ -3,6 +3,7 @@ package UI;
 import Model.Class;
 import Presenter.ClassPresenter;
 import Utils.TabController;
+import Utils.ValidatorUtil;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -98,26 +99,34 @@ public class ClassView extends BaseView {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                String s = String.valueOf(jTextField.getText());
-                Class lesson = classPresent.search(s);
-                if(lesson!=null)
+                String s = jTextField.getText();
+                if(s.isEmpty())
                 {
-                    String classPro = null;
-                    if(lesson.getObligatory()==true)
+                    JOptionPane.showMessageDialog(jFrame,"课程名不能为空","提示",JOptionPane.WARNING_MESSAGE);
+
+                }
+                else {
+                    Class lesson = classPresent.search(s);
+                    if(lesson!=null)
                     {
-                        classPro = "必修";
+                        String classPro = null;
+                        if(lesson.getObligatory()==true)
+                        {
+                            classPro = "必修";
+                        }
+                        else{
+                            classPro = "选修";
+                        }
+                        String s1[] = {lesson.getClassId(),lesson.getName(),String.valueOf(lesson.getClassHour()),
+                                classPro,String.valueOf(lesson.getScore()),lesson.getTeacher()};
+                        model.setRowCount(0);
+                        model.addRow(s1);
                     }
                     else{
-                        classPro = "选修";
+                        JOptionPane.showMessageDialog(jFrame,"该课程不存在请重新输入","提示",JOptionPane.WARNING_MESSAGE);
                     }
-                    String s1[] = {lesson.getClassId(),lesson.getName(),String.valueOf(lesson.getClassHour()),
-                            classPro,String.valueOf(lesson.getScore()),lesson.getTeacher()};
-                    model.setRowCount(0);
-                    model.addRow(s1);
                 }
-                else{
-                    JOptionPane.showMessageDialog(jFrame,"该课程不存在请重新输入","提示",JOptionPane.WARNING_MESSAGE);
-                }
+
             }
         });
         return jPanel1;
@@ -196,24 +205,32 @@ public class ClassView extends BaseView {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 Class lesson = new Class();
-                lesson.setName(String.valueOf(jTextFieldAddId.getText()));
-                lesson.setClassHour(Integer.valueOf(jTextFieldAddName.getText()));
-                Boolean classP;
-                if(jRadioButtonB.isSelected()){
-                    classP = true;
-                } else{
-                    classP = false;
-                }
-                lesson.setObligatory(classP);
-                lesson.setScore(Float.valueOf(jTextFieldAddAge.getText()));
-                lesson.setTeacher(String.valueOf(jTextFieldAddIdCard.getText()));
-                Boolean result = classPresent.add(lesson);
-                if(result!=false)
+                if(jTextFieldAddName.getText().isEmpty()||jTextFieldAddAge.getText().isEmpty())
                 {
-                    JOptionPane.showMessageDialog(jFrame,"添加成功","提示",JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(jFrame,"输入的信息不能为空","提示",JOptionPane.WARNING_MESSAGE);
+
                 }
                 else{
-                    JOptionPane.showMessageDialog(jFrame,"您的信息输入有误，请重新输入","提示",JOptionPane.WARNING_MESSAGE);
+                    lesson.setName(jTextFieldAddId.getText());
+                    lesson.setClassHour(Integer.valueOf(jTextFieldAddName.getText()));
+                    Boolean classP;
+                    if(jRadioButtonB.isSelected()){
+                        classP = true;
+                    } else{
+                        classP = false;
+                    }
+                    lesson.setObligatory(classP);
+                    lesson.setScore(Float.valueOf(jTextFieldAddAge.getText()));
+                    lesson.setTeacher(jTextFieldAddIdCard.getText());
+                    ValidatorUtil.validate(jFrame,lesson);
+                    Boolean result = classPresent.add(lesson);
+                    if(result!=false)
+                    {
+                        JOptionPane.showMessageDialog(jFrame,"添加成功","提示",JOptionPane.WARNING_MESSAGE);
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(jFrame,"输入的课程名已存在，请重新输入","提示",JOptionPane.WARNING_MESSAGE);
+                    }
                 }
             }
         });
@@ -297,7 +314,7 @@ public class ClassView extends BaseView {
                 if (result != false) {
                     JOptionPane.showMessageDialog(jFrame, "修改成功", "提示", JOptionPane.WARNING_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(jFrame, "您输入的信息有误，请重新输入", "提示", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(jFrame, "该课程号不存在，请重新输入", "提示", JOptionPane.WARNING_MESSAGE);
                 }
 
             }

@@ -121,16 +121,23 @@ public class StudentView extends BaseView {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                String s = String.valueOf(jTextField.getText());
-                Student student = studentPresent.search(s);
-                if(student!=null){
-                    String s1[] = {student.getName(),student.getId(),student.getClassName(),student.getSex(),String.valueOf(student.getAge()) ,
-                    student.getIdCard(),student.getMajor()};
-                    model.setRowCount(0);
-                    model.addRow(s1);
+                String s = jTextField.getText();
+                if(s.isEmpty())
+                {
+                    JOptionPane.showMessageDialog(jFrame,"学号不能为空！","提示",JOptionPane.WARNING_MESSAGE);
                 }
-                else{
-                    JOptionPane.showMessageDialog(jFrame,"学号不存在或者输入错误","提示",JOptionPane.WARNING_MESSAGE);
+                else {
+                    Student student = studentPresent.search(s);
+                    if(student!=null){
+                        String s1[] = {student.getName(),student.getId(),student.getClassName(),student.getSex(),String.valueOf(student.getAge()) ,
+                                student.getIdCard(),student.getMajor()};
+                        model.setRowCount(0);
+                        model.addRow(s1);
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(jFrame,"查无此人！","提示",JOptionPane.WARNING_MESSAGE);
+                    }
+
                 }
             }
         }
@@ -291,18 +298,22 @@ public class StudentView extends BaseView {
                 super.mouseClicked(e);
                 Boolean result;
                 Student student = new Student();
-                student.setId(String.valueOf(jTextFieldAddId.getText()));
-                student.setName(String.valueOf(jTextFieldAddName.getText()));
-                if(jRadioButtonB.isSelected()){
-                    student.setSex(String.valueOf(jRadioButtonB.getText()));
-                }
-                else if(jRadioButtonG.isSelected()){
-                    student.setSex(String.valueOf(jRadioButtonG.getText()));
+                if (jTextFieldAddAge.getText().isEmpty()){
+                    JOptionPane.showMessageDialog(jFrame,"年龄不能为空","提示",JOptionPane.WARNING_MESSAGE);
                 }
                 student.setAge(Integer.valueOf(jTextFieldAddAge.getText()));
-                student.setIdCard(String.valueOf(jTextFieldAddIdCard.getText()));
-                student.setMajor(String.valueOf(jTextFieldAddMajor.getText()));
-                student.setClassName(String.valueOf(jTextFieldAddClassN.getText()));
+                student.setId(jTextFieldAddId.getText());
+                student.setName(jTextFieldAddName.getText());
+                if(jRadioButtonB.isSelected()){
+                    student.setSex(jRadioButtonB.getText());
+                }
+                else if(jRadioButtonG.isSelected()){
+                    student.setSex(jRadioButtonG.getText());
+                }
+
+                student.setIdCard(jTextFieldAddIdCard.getText());
+                student.setMajor(jTextFieldAddMajor.getText());
+                student.setClassName(jTextFieldAddClassN.getText());
                 ValidatorUtil.validate(jFrame,student);
                 result = studentPresent.add(student);
                 if(result!=false)
@@ -310,7 +321,7 @@ public class StudentView extends BaseView {
                     JOptionPane.showMessageDialog(jFrame,"添加成功","提示",JOptionPane.WARNING_MESSAGE);
                 }
                 else{
-                    JOptionPane.showMessageDialog(jFrame,"您输入的信息有误，请核对后再输入","提示",JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(jFrame,"该学号已存在，请重新输入","提示",JOptionPane.WARNING_MESSAGE);
                 }
 
             }
@@ -322,13 +333,18 @@ public class StudentView extends BaseView {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 String s = String.valueOf(jTextFieldDel.getText());
-                Boolean result = studentPresent.del(s);
-                if(result!=false)
-                {
-                    JOptionPane.showMessageDialog(jFrame,"删除成功","提示",JOptionPane.WARNING_MESSAGE);
+                if(s.isEmpty()){
+                    JOptionPane.showMessageDialog(jFrame,"学号不能为空","提示",JOptionPane.WARNING_MESSAGE);
                 }
-                else{
-                    JOptionPane.showMessageDialog(jFrame,"学号不存在或该学生正在校读书","提示",JOptionPane.WARNING_MESSAGE);
+                else {
+                    Boolean result = studentPresent.del(s);
+                    if(result!=false)
+                    {
+                        JOptionPane.showMessageDialog(jFrame,"删除成功","提示",JOptionPane.WARNING_MESSAGE);
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(jFrame,"该学生不存在","提示",JOptionPane.WARNING_MESSAGE);
+                    }
                 }
             }
         });
@@ -338,21 +354,26 @@ public class StudentView extends BaseView {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                String studentId = String.valueOf(jTextFieldMod.getText());
+                String studentId = jTextFieldMod.getText();
                 String studentPro= String.valueOf(jComboBoxMod.getSelectedItem());
-                String studentValue = String.valueOf(jTextFieldMod1.getText());
-                Boolean result = null;
-                try {
-                    result = studentPresent.mod(studentId,studentPro,studentValue);
-                } catch (SQLException e1) {
-                    e1.printStackTrace();
-                }
-                if(result!=false)
-                {
-                    JOptionPane.showMessageDialog(jFrame,"修改成功","提示",JOptionPane.WARNING_MESSAGE);
+                String studentValue = jTextFieldMod1.getText();
+                if(studentId.isEmpty()||studentValue.isEmpty()){
+                    JOptionPane.showMessageDialog(jFrame,"输入的信息不能为空！","提示",JOptionPane.WARNING_MESSAGE);
                 }
                 else{
-                    JOptionPane.showMessageDialog(jFrame,"该学生不存在或属性输入错误","提示",JOptionPane.WARNING_MESSAGE);
+                    Boolean result = null;
+                    try {
+                        result = studentPresent.mod(studentId,studentPro,studentValue);
+                    } catch (SQLException e1) {
+                        e1.printStackTrace();
+                    }
+                    if(result!=false)
+                    {
+                        JOptionPane.showMessageDialog(jFrame,"修改成功","提示",JOptionPane.WARNING_MESSAGE);
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(jFrame,"该学生不存在！","提示",JOptionPane.WARNING_MESSAGE);
+                    }
                 }
             }
         });

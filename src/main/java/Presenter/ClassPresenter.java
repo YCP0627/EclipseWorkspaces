@@ -18,8 +18,15 @@ public class ClassPresenter {
     }
 
     public Boolean add(Class lesson){
-        Boolean result = operation.insertClassInfo(lesson);
-        return result;
+        Class lesson1 = operation.getClassInfoById(lesson.getName());
+        if(lesson1==null){
+            Boolean result = operation.insertClassInfo(lesson);
+            return result;
+        }
+        else{
+            return false;
+        }
+
     }
 
     public Boolean del(String classID){
