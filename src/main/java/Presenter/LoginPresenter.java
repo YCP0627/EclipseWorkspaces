@@ -2,6 +2,7 @@ package Presenter;
 
 import Model.Adminstrator;
 import UI.ILoginView;
+import UI.Password;
 import Utils.LoginInfo;
 import com.mysql.cj.util.StringUtils;
 import dao.SqlOperation;
@@ -16,11 +17,13 @@ public class LoginPresenter {
         this.loginView = loginView;
     }
 
-    public void login(final String user, final String password){
+    public void login(final String user, String password){
+        password = Password.encryption(password);
         if (StringUtils.isEmptyOrWhitespaceOnly(user)||StringUtils.isEmptyOrWhitespaceOnly(password)){
             loginView.loginResult(false,"账号密码不能为空");
             return;
         }
+        final String finalPassword = password;
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -30,7 +33,7 @@ public class LoginPresenter {
                     loginView.loginResult(false,"不存在的账号，请联系管理员。");
                     return;
                 }
-                if (adminstrator.getPassword().equals(password)){
+                if (adminstrator.getPassword().equals(finalPassword)){
                     LoginInfo loginInfo = LoginInfo.getInstance();
                     //下面这一行是往reids数据库里面加数据
                     loginInfo.setAdminInRedis(adminstrator);

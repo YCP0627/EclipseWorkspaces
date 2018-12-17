@@ -116,7 +116,7 @@ public class AddAdminView extends BaseView {
                     adminstrator.setStyle("超级管理员");
                 }
                 adminstrator.setPhone(String.valueOf(jTextFieldName.getText()));
-                adminstrator.setPassword(String .valueOf(jTextFieldPhone.getText()));
+                adminstrator.setPassword(Password.encryption(jTextFieldPhone.getText()));
                 adminstrator.setName(String.valueOf(jTextField1.getText()));
                 adminstrator.setRegisterDate(new Date());
                 adminstrator.setLastDate(new Date());
