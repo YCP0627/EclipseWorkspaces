@@ -2,6 +2,7 @@ package Presenter;
 
 import Model.Adminstrator;
 import UI.AddAdminView;
+import Utils.Password;
 import dao.SqlOperation;
 import dao.SqlOperationImpl;
 
@@ -12,6 +13,7 @@ public class AddAdminPresenter {
 
     public Boolean add(Adminstrator adminstrator){
         Boolean result;
+        adminstrator.setPassword(Password.encryption(adminstrator.getPassword()));
         result = operation.addAdmi(adminstrator);
         return result;
     }

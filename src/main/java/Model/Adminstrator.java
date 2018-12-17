@@ -1,10 +1,21 @@
 package Model;
 
+import Utils.IsPhone;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 public class Adminstrator {
+    @NotEmpty
+    @IsPhone()
     private String phone;
+    @NotEmpty
+    @Size(min = 10,max = 16,message = "密码最小为{min}位,最大为{max}位")
     private String password;
+    @NotEmpty
     private String name;
     private String style;
     private Date registerDate;

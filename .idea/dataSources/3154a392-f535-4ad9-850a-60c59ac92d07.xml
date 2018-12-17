@@ -1192,7 +1192,7 @@
     <column id="297" parent="282" name="password">
       <Position>2</Position>
       <Comment>用户密码</Comment>
-      <DataType>varchar(20)|0s</DataType>
+      <DataType>varchar(100)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>

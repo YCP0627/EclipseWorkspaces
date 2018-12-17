@@ -27,6 +27,7 @@ public class CoursePresenter {
         for (Grade grade : gradeList){
             Student student = sqlOperation.getStudentInfoById(grade.getId());
             grade.setBanji(student.getClassName());
+            grade.setClassName(sqlOperation.getClassInfoById1(grade.getClassId()).getName());
         }
         courseView.getGradeByName(model,gradeList);
 
@@ -45,6 +46,7 @@ public class CoursePresenter {
         }
         Student student = sqlOperation.getStudentInfoById(grade.getId());
         grade.setBanji(student.getClassName());
+        grade.setClassName(sqlOperation.getClassInfoById1(grade.getClassId()).getName());
         courseView.getGradeByNameAndClass(model,grade);
     }
 
@@ -69,6 +71,10 @@ public class CoursePresenter {
         Pattern pattern = Pattern.compile("^[-\\+]?[.\\d]*$");
         if (!pattern.matcher(text1).matches()){
             courseView.insertResult(false,"分数数字有误");
+            return;
+        }
+        if (Float.valueOf(text1) >100 && Float.valueOf(text1)<0){
+            courseView.insertResult(false,"分数范围出错");
             return;
         }
         Student student = sqlOperation.getStudentInfoById(text);
@@ -96,6 +102,7 @@ public class CoursePresenter {
         for (Grade grade : gradeList){
             Student student = sqlOperation.getStudentInfoById(grade.getId());
             grade.setBanji(student.getClassName());
+            grade.setClassName(sqlOperation.getClassInfoById1(grade.getClassId()).getName());
         }
         courseView.getGradeByName(tableModel,gradeList);
     }
@@ -108,6 +115,7 @@ public class CoursePresenter {
         }
         Student student = sqlOperation.getStudentInfoById(grade.getId());
         grade.setBanji(student.getClassName());
+        grade.setClassName(sqlOperation.getClassInfoById1(grade.getClassId()).getName());
         courseView.getGradeByNameAndClass(model,grade);
     }
 

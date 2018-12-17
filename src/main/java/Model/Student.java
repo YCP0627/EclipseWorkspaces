@@ -1,10 +1,21 @@
 package Model;
 
+import Utils.IsIdCard;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 public class Student {
+    @NotEmpty
+    @Pattern(regexp = "B.*",message = "学号必须以B开头")
+    @Size(min = 12,max = 12,message = "学号位数不对")
     private String id;
+    @NotEmpty
     private String name;
     private String sex;
     private int age;
+    @IsIdCard
     private String idCard;
     private String major;
     private String className;

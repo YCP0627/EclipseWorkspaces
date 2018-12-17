@@ -274,6 +274,28 @@ public class SqlOperationImpl implements SqlOperation {
         return null;
     }
 
+    @Override
+    public Class getClassInfoById1(String id) {
+        String s = String.format("select * from class where class_id = \"%s\"",id);
+        try{
+            PreparedStatement pre = connection.prepareStatement(s);
+            ResultSet result = pre.executeQuery();
+            if(result.next()){
+                Class lesson = new Class();
+                lesson.setClassId(result.getString("class_id"));
+                lesson.setClassHour(result.getInt("class_hour"));
+                lesson.setObligatory(result.getBoolean("class_proprety"));
+                lesson.setScore(result.getFloat("score"));
+                lesson.setName(result.getString("class_name"));
+                lesson.setTeacher(result.getString("teacher"));
+                return lesson;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     public Boolean updateAdmin(String phone, String key, Object value) {
         String s;

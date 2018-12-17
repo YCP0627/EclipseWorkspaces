@@ -29,6 +29,8 @@ public interface SqlOperation {
     Boolean delClassInfo(String classId);
     Boolean modifyClassInfo(String id,String key,String  value);
     Class getClassInfoById(String name);
+    Class getClassInfoById1(String id);
+
 
     void modifyGradeName(String id,String studentName) throws SQLException;
 

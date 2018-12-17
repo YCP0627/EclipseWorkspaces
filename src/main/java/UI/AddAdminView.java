@@ -2,6 +2,8 @@ package UI;
 
 import Model.Adminstrator;
 import Presenter.AddAdminPresenter;
+import Utils.Password;
+import Utils.ValidatorUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -116,17 +118,18 @@ public class AddAdminView extends BaseView {
                     adminstrator.setStyle("超级管理员");
                 }
                 adminstrator.setPhone(String.valueOf(jTextFieldName.getText()));
-                adminstrator.setPassword(Password.encryption(jTextFieldPhone.getText()));
+                adminstrator.setPassword(jTextFieldPhone.getText());
                 adminstrator.setName(String.valueOf(jTextField1.getText()));
                 adminstrator.setRegisterDate(new Date());
                 adminstrator.setLastDate(new Date());
+                ValidatorUtil.validate(jFrame,adminstrator);
                 Boolean result = addAdminPresenter.add(adminstrator);
                 if(result!=false)
                 {
                     JOptionPane.showMessageDialog(jFrame,"添加成功","提示",JOptionPane.WARNING_MESSAGE);
                 }
                 else{
-                    JOptionPane.showMessageDialog(jFrame,"输入的信息不能为空，请重新输入","提示",JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(jFrame,"已经存在相应的用户，请重新输入","提示",JOptionPane.WARNING_MESSAGE);
                 }
             }
         });

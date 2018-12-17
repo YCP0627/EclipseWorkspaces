@@ -3,6 +3,7 @@ package UI;
 import Model.Student;
 import Presenter.StudentPresent;
 import Utils.TabController;
+import Utils.ValidatorUtil;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -302,6 +303,7 @@ public class StudentView extends BaseView {
                 student.setIdCard(String.valueOf(jTextFieldAddIdCard.getText()));
                 student.setMajor(String.valueOf(jTextFieldAddMajor.getText()));
                 student.setClassName(String.valueOf(jTextFieldAddClassN.getText()));
+                ValidatorUtil.validate(jFrame,student);
                 result = studentPresent.add(student);
                 if(result!=false)
                 {

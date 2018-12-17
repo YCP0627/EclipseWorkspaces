@@ -2,7 +2,7 @@ package Presenter;
 
 import Model.Adminstrator;
 import UI.ILoginView;
-import UI.Password;
+import Utils.Password;
 import Utils.LoginInfo;
 import com.mysql.cj.util.StringUtils;
 import dao.SqlOperation;
